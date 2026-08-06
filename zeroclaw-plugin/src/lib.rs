@@ -1,5 +1,5 @@
 wit_bindgen::generate!({
-    world: "zeroclaw-plugin",
+    world: "tool-plugin",
 });
 
 use exports::zeroclaw::plugin::tool::{Guest, ToolResult};

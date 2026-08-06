@@ -4,6 +4,42 @@ interface types {
     type json-string = string;
 }
 
+interface logging {
+    use types.{json-string};
+
+    enum log-level {
+        trace,
+        debug,
+        info,
+        warn,
+        error,
+    }
+
+    enum plugin-action {
+        start, complete, fail, cancel, skip, timeout, retry, inbound, outbound,
+        send, receive, connect, disconnect, reconnect, spawn, kill, tick, trigger,
+        schedule, approve, reject, defer, read, write, delete, list-action, query,
+        invoke, dispatch, resolve, register, unregister, load, save, migrate, validate,
+        note, memory-audit,
+    }
+
+    enum plugin-outcome {
+        success,
+        failure,
+    }
+
+    record plugin-event {
+        function-name: string,
+        action: plugin-action,
+        outcome: option<plugin-outcome>,
+        duration-ms: option<u64>,
+        attrs: option<json-string>,
+        message: string,
+    }
+
+    log-record: func(level: log-level, event: plugin-event);
+}
+
 interface tool {
     use types.{json-string};
     record tool-result {
@@ -22,7 +58,8 @@ interface plugin-info {
     author: func() -> string;
 }
 
-world zeroclaw-plugin {
+world tool-plugin {
+    import logging;
     export plugin-info;
     export tool;
 }

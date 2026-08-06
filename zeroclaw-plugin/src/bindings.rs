@@ -13,6 +13,416 @@ pub mod zeroclaw {
             use super::super::super::_rt;
             pub type JsonString = _rt::String;
         }
+        #[allow(dead_code, async_fn_in_trait, unused_imports, clippy::all)]
+        pub mod logging {
+            #[used]
+            #[doc(hidden)]
+            static __FORCE_SECTION_REF: fn() = super::super::super::__link_custom_section_describing_imports;
+            use super::super::super::_rt;
+            pub type JsonString = super::super::super::zeroclaw::plugin::types::JsonString;
+            #[repr(u8)]
+            #[derive(Clone, Copy, Eq, Ord, PartialEq, PartialOrd)]
+            pub enum LogLevel {
+                Trace,
+                Debug,
+                Info,
+                Warn,
+                Error,
+            }
+            impl ::core::fmt::Debug for LogLevel {
+                fn fmt(
+                    &self,
+                    f: &mut ::core::fmt::Formatter<'_>,
+                ) -> ::core::fmt::Result {
+                    match self {
+                        LogLevel::Trace => f.debug_tuple("LogLevel::Trace").finish(),
+                        LogLevel::Debug => f.debug_tuple("LogLevel::Debug").finish(),
+                        LogLevel::Info => f.debug_tuple("LogLevel::Info").finish(),
+                        LogLevel::Warn => f.debug_tuple("LogLevel::Warn").finish(),
+                        LogLevel::Error => f.debug_tuple("LogLevel::Error").finish(),
+                    }
+                }
+            }
+            impl LogLevel {
+                #[doc(hidden)]
+                pub unsafe fn _lift(val: u8) -> LogLevel {
+                    if !cfg!(debug_assertions) {
+                        return ::core::mem::transmute(val);
+                    }
+                    match val {
+                        0 => LogLevel::Trace,
+                        1 => LogLevel::Debug,
+                        2 => LogLevel::Info,
+                        3 => LogLevel::Warn,
+                        4 => LogLevel::Error,
+                        _ => panic!("invalid enum discriminant"),
+                    }
+                }
+            }
+            #[repr(u8)]
+            #[derive(Clone, Copy, Eq, Ord, PartialEq, PartialOrd)]
+            pub enum PluginAction {
+                Start,
+                Complete,
+                Fail,
+                Cancel,
+                Skip,
+                Timeout,
+                Retry,
+                Inbound,
+                Outbound,
+                Send,
+                Receive,
+                Connect,
+                Disconnect,
+                Reconnect,
+                Spawn,
+                Kill,
+                Tick,
+                Trigger,
+                Schedule,
+                Approve,
+                Reject,
+                Defer,
+                Read,
+                Write,
+                Delete,
+                ListAction,
+                Query,
+                Invoke,
+                Dispatch,
+                Resolve,
+                Register,
+                Unregister,
+                Load,
+                Save,
+                Migrate,
+                Validate,
+                Note,
+                MemoryAudit,
+            }
+            impl ::core::fmt::Debug for PluginAction {
+                fn fmt(
+                    &self,
+                    f: &mut ::core::fmt::Formatter<'_>,
+                ) -> ::core::fmt::Result {
+                    match self {
+                        PluginAction::Start => {
+                            f.debug_tuple("PluginAction::Start").finish()
+                        }
+                        PluginAction::Complete => {
+                            f.debug_tuple("PluginAction::Complete").finish()
+                        }
+                        PluginAction::Fail => {
+                            f.debug_tuple("PluginAction::Fail").finish()
+                        }
+                        PluginAction::Cancel => {
+                            f.debug_tuple("PluginAction::Cancel").finish()
+                        }
+                        PluginAction::Skip => {
+                            f.debug_tuple("PluginAction::Skip").finish()
+                        }
+                        PluginAction::Timeout => {
+                            f.debug_tuple("PluginAction::Timeout").finish()
+                        }
+                        PluginAction::Retry => {
+                            f.debug_tuple("PluginAction::Retry").finish()
+                        }
+                        PluginAction::Inbound => {
+                            f.debug_tuple("PluginAction::Inbound").finish()
+                        }
+                        PluginAction::Outbound => {
+                            f.debug_tuple("PluginAction::Outbound").finish()
+                        }
+                        PluginAction::Send => {
+                            f.debug_tuple("PluginAction::Send").finish()
+                        }
+                        PluginAction::Receive => {
+                            f.debug_tuple("PluginAction::Receive").finish()
+                        }
+                        PluginAction::Connect => {
+                            f.debug_tuple("PluginAction::Connect").finish()
+                        }
+                        PluginAction::Disconnect => {
+                            f.debug_tuple("PluginAction::Disconnect").finish()
+                        }
+                        PluginAction::Reconnect => {
+                            f.debug_tuple("PluginAction::Reconnect").finish()
+                        }
+                        PluginAction::Spawn => {
+                            f.debug_tuple("PluginAction::Spawn").finish()
+                        }
+                        PluginAction::Kill => {
+                            f.debug_tuple("PluginAction::Kill").finish()
+                        }
+                        PluginAction::Tick => {
+                            f.debug_tuple("PluginAction::Tick").finish()
+                        }
+                        PluginAction::Trigger => {
+                            f.debug_tuple("PluginAction::Trigger").finish()
+                        }
+                        PluginAction::Schedule => {
+                            f.debug_tuple("PluginAction::Schedule").finish()
+                        }
+                        PluginAction::Approve => {
+                            f.debug_tuple("PluginAction::Approve").finish()
+                        }
+                        PluginAction::Reject => {
+                            f.debug_tuple("PluginAction::Reject").finish()
+                        }
+                        PluginAction::Defer => {
+                            f.debug_tuple("PluginAction::Defer").finish()
+                        }
+                        PluginAction::Read => {
+                            f.debug_tuple("PluginAction::Read").finish()
+                        }
+                        PluginAction::Write => {
+                            f.debug_tuple("PluginAction::Write").finish()
+                        }
+                        PluginAction::Delete => {
+                            f.debug_tuple("PluginAction::Delete").finish()
+                        }
+                        PluginAction::ListAction => {
+                            f.debug_tuple("PluginAction::ListAction").finish()
+                        }
+                        PluginAction::Query => {
+                            f.debug_tuple("PluginAction::Query").finish()
+                        }
+                        PluginAction::Invoke => {
+                            f.debug_tuple("PluginAction::Invoke").finish()
+                        }
+                        PluginAction::Dispatch => {
+                            f.debug_tuple("PluginAction::Dispatch").finish()
+                        }
+                        PluginAction::Resolve => {
+                            f.debug_tuple("PluginAction::Resolve").finish()
+                        }
+                        PluginAction::Register => {
+                            f.debug_tuple("PluginAction::Register").finish()
+                        }
+                        PluginAction::Unregister => {
+                            f.debug_tuple("PluginAction::Unregister").finish()
+                        }
+                        PluginAction::Load => {
+                            f.debug_tuple("PluginAction::Load").finish()
+                        }
+                        PluginAction::Save => {
+                            f.debug_tuple("PluginAction::Save").finish()
+                        }
+                        PluginAction::Migrate => {
+                            f.debug_tuple("PluginAction::Migrate").finish()
+                        }
+                        PluginAction::Validate => {
+                            f.debug_tuple("PluginAction::Validate").finish()
+                        }
+                        PluginAction::Note => {
+                            f.debug_tuple("PluginAction::Note").finish()
+                        }
+                        PluginAction::MemoryAudit => {
+                            f.debug_tuple("PluginAction::MemoryAudit").finish()
+                        }
+                    }
+                }
+            }
+            impl PluginAction {
+                #[doc(hidden)]
+                pub unsafe fn _lift(val: u8) -> PluginAction {
+                    if !cfg!(debug_assertions) {
+                        return ::core::mem::transmute(val);
+                    }
+                    match val {
+                        0 => PluginAction::Start,
+                        1 => PluginAction::Complete,
+                        2 => PluginAction::Fail,
+                        3 => PluginAction::Cancel,
+                        4 => PluginAction::Skip,
+                        5 => PluginAction::Timeout,
+                        6 => PluginAction::Retry,
+                        7 => PluginAction::Inbound,
+                        8 => PluginAction::Outbound,
+                        9 => PluginAction::Send,
+                        10 => PluginAction::Receive,
+                        11 => PluginAction::Connect,
+                        12 => PluginAction::Disconnect,
+                        13 => PluginAction::Reconnect,
+                        14 => PluginAction::Spawn,
+                        15 => PluginAction::Kill,
+                        16 => PluginAction::Tick,
+                        17 => PluginAction::Trigger,
+                        18 => PluginAction::Schedule,
+                        19 => PluginAction::Approve,
+                        20 => PluginAction::Reject,
+                        21 => PluginAction::Defer,
+                        22 => PluginAction::Read,
+                        23 => PluginAction::Write,
+                        24 => PluginAction::Delete,
+                        25 => PluginAction::ListAction,
+                        26 => PluginAction::Query,
+                        27 => PluginAction::Invoke,
+                        28 => PluginAction::Dispatch,
+                        29 => PluginAction::Resolve,
+                        30 => PluginAction::Register,
+                        31 => PluginAction::Unregister,
+                        32 => PluginAction::Load,
+                        33 => PluginAction::Save,
+                        34 => PluginAction::Migrate,
+                        35 => PluginAction::Validate,
+                        36 => PluginAction::Note,
+                        37 => PluginAction::MemoryAudit,
+                        _ => panic!("invalid enum discriminant"),
+                    }
+                }
+            }
+            #[repr(u8)]
+            #[derive(Clone, Copy, Eq, Ord, PartialEq, PartialOrd)]
+            pub enum PluginOutcome {
+                Success,
+                Failure,
+            }
+            impl ::core::fmt::Debug for PluginOutcome {
+                fn fmt(
+                    &self,
+                    f: &mut ::core::fmt::Formatter<'_>,
+                ) -> ::core::fmt::Result {
+                    match self {
+                        PluginOutcome::Success => {
+                            f.debug_tuple("PluginOutcome::Success").finish()
+                        }
+                        PluginOutcome::Failure => {
+                            f.debug_tuple("PluginOutcome::Failure").finish()
+                        }
+                    }
+                }
+            }
+            impl PluginOutcome {
+                #[doc(hidden)]
+                pub unsafe fn _lift(val: u8) -> PluginOutcome {
+                    if !cfg!(debug_assertions) {
+                        return ::core::mem::transmute(val);
+                    }
+                    match val {
+                        0 => PluginOutcome::Success,
+                        1 => PluginOutcome::Failure,
+                        _ => panic!("invalid enum discriminant"),
+                    }
+                }
+            }
+            #[derive(Clone)]
+            pub struct PluginEvent {
+                pub function_name: _rt::String,
+                pub action: PluginAction,
+                pub outcome: Option<PluginOutcome>,
+                pub duration_ms: Option<u64>,
+                pub attrs: Option<JsonString>,
+                pub message: _rt::String,
+            }
+            impl ::core::fmt::Debug for PluginEvent {
+                fn fmt(
+                    &self,
+                    f: &mut ::core::fmt::Formatter<'_>,
+                ) -> ::core::fmt::Result {
+                    f.debug_struct("PluginEvent")
+                        .field("function-name", &self.function_name)
+                        .field("action", &self.action)
+                        .field("outcome", &self.outcome)
+                        .field("duration-ms", &self.duration_ms)
+                        .field("attrs", &self.attrs)
+                        .field("message", &self.message)
+                        .finish()
+                }
+            }
+            #[allow(unused_unsafe, clippy::all)]
+            pub fn log_record(level: LogLevel, event: &PluginEvent) -> () {
+                unsafe {
+                    let PluginEvent {
+                        function_name: function_name0,
+                        action: action0,
+                        outcome: outcome0,
+                        duration_ms: duration_ms0,
+                        attrs: attrs0,
+                        message: message0,
+                    } = event;
+                    let vec1 = function_name0;
+                    let ptr1 = vec1.as_ptr().cast::<u8>();
+                    let len1 = vec1.len();
+                    let (result2_0, result2_1) = match outcome0 {
+                        Some(e) => (1i32, e.clone() as i32),
+                        None => (0i32, 0i32),
+                    };
+                    let (result3_0, result3_1) = match duration_ms0 {
+                        Some(e) => (1i32, _rt::as_i64(e)),
+                        None => (0i32, 0i64),
+                    };
+                    let (result5_0, result5_1, result5_2) = match attrs0 {
+                        Some(e) => {
+                            let vec4 = e;
+                            let ptr4 = vec4.as_ptr().cast::<u8>();
+                            let len4 = vec4.len();
+                            (1i32, ptr4.cast_mut(), len4)
+                        }
+                        None => (0i32, ::core::ptr::null_mut(), 0usize),
+                    };
+                    let vec6 = message0;
+                    let ptr6 = vec6.as_ptr().cast::<u8>();
+                    let len6 = vec6.len();
+                    #[cfg(target_arch = "wasm32")]
+                    #[link(wasm_import_module = "zeroclaw:plugin/logging@0.1.0")]
+                    unsafe extern "C" {
+                        #[link_name = "log-record"]
+                        fn wit_import7(
+                            _: i32,
+                            _: *mut u8,
+                            _: usize,
+                            _: i32,
+                            _: i32,
+                            _: i32,
+                            _: i32,
+                            _: i64,
+                            _: i32,
+                            _: *mut u8,
+                            _: usize,
+                            _: *mut u8,
+                            _: usize,
+                        );
+                    }
+                    #[cfg(not(target_arch = "wasm32"))]
+                    unsafe extern "C" fn wit_import7(
+                        _: i32,
+                        _: *mut u8,
+                        _: usize,
+                        _: i32,
+                        _: i32,
+                        _: i32,
+                        _: i32,
+                        _: i64,
+                        _: i32,
+                        _: *mut u8,
+                        _: usize,
+                        _: *mut u8,
+                        _: usize,
+                    ) {
+                        unreachable!()
+                    }
+                    unsafe {
+                        wit_import7(
+                            level.clone() as i32,
+                            ptr1.cast_mut(),
+                            len1,
+                            action0.clone() as i32,
+                            result2_0,
+                            result2_1,
+                            result3_0,
+                            result3_1,
+                            result5_0,
+                            result5_1,
+                            result5_2,
+                            ptr6.cast_mut(),
+                            len6,
+                        )
+                    };
+                }
+            }
+        }
     }
 }
 #[rustfmt::skip]
@@ -381,6 +791,29 @@ pub mod exports {
 mod _rt {
     #![allow(dead_code, clippy::all)]
     pub use alloc_crate::string::String;
+    pub fn as_i64<T: AsI64>(t: T) -> i64 {
+        t.as_i64()
+    }
+    pub trait AsI64 {
+        fn as_i64(self) -> i64;
+    }
+    impl<'a, T: Copy + AsI64> AsI64 for &'a T {
+        fn as_i64(self) -> i64 {
+            (*self).as_i64()
+        }
+    }
+    impl AsI64 for i64 {
+        #[inline]
+        fn as_i64(self) -> i64 {
+            self as i64
+        }
+    }
+    impl AsI64 for u64 {
+        #[inline]
+        fn as_i64(self) -> i64 {
+            self as i64
+        }
+    }
     #[cfg(target_arch = "wasm32")]
     pub fn run_ctors_once() {
         wit_bindgen_rt::run_ctors_once();
@@ -421,7 +854,7 @@ mod _rt {
 /// ```
 #[allow(unused_macros)]
 #[doc(hidden)]
-macro_rules! __export_zeroclaw_plugin_impl {
+macro_rules! __export_tool_plugin_impl {
     ($ty:ident) => {
         self::export!($ty with_types_in self);
     };
@@ -435,25 +868,36 @@ macro_rules! __export_zeroclaw_plugin_impl {
     };
 }
 #[doc(inline)]
-pub(crate) use __export_zeroclaw_plugin_impl as export;
+pub(crate) use __export_tool_plugin_impl as export;
 #[cfg(target_arch = "wasm32")]
 #[unsafe(
-    link_section = "component-type:wit-bindgen:0.41.0:zeroclaw:plugin@0.1.0:zeroclaw-plugin:encoded world"
+    link_section = "component-type:wit-bindgen:0.41.0:zeroclaw:plugin@0.1.0:tool-plugin:encoded world"
 )]
 #[doc(hidden)]
 #[allow(clippy::octal_escapes)]
-pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 510] = *b"\
-\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\xf8\x02\x01A\x02\x01\
-A\x07\x01B\x02\x01s\x04\0\x0bjson-string\x03\0\0\x03\0\x1bzeroclaw:plugin/types@\
-0.1.0\x05\0\x01B\x03\x01@\0\0s\x04\0\x07version\x01\0\x04\0\x06author\x01\0\x04\0\
-!zeroclaw:plugin/plugin-info@0.1.0\x05\x01\x02\x03\0\0\x0bjson-string\x01B\x0d\x02\
-\x03\x02\x01\x02\x04\0\x0bjson-string\x03\0\0\x01ks\x01r\x03\x07success\x7f\x06o\
-utputs\x05error\x02\x04\0\x0btool-result\x03\0\x03\x01@\0\0s\x04\0\x04name\x01\x05\
-\x04\0\x0bdescription\x01\x05\x01@\0\0\x01\x04\0\x11parameters-schema\x01\x06\x01\
-j\x01\x04\x01s\x01@\x01\x04args\x01\0\x07\x04\0\x07execute\x01\x08\x04\0\x1azero\
-claw:plugin/tool@0.1.0\x05\x03\x04\0%zeroclaw:plugin/zeroclaw-plugin@0.1.0\x04\0\
-\x0b\x15\x01\0\x0fzeroclaw-plugin\x03\0\0\0G\x09producers\x01\x0cprocessed-by\x02\
-\x0dwit-component\x070.227.1\x10wit-bindgen-rust\x060.41.0";
+pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 1077] = *b"\
+\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\xb3\x07\x01A\x02\x01\
+A\x09\x01B\x02\x01s\x04\0\x0bjson-string\x03\0\0\x03\0\x1bzeroclaw:plugin/types@\
+0.1.0\x05\0\x02\x03\0\0\x0bjson-string\x01B\x0f\x02\x03\x02\x01\x01\x04\0\x0bjso\
+n-string\x03\0\0\x01m\x05\x05trace\x05debug\x04info\x04warn\x05error\x04\0\x09lo\
+g-level\x03\0\x02\x01m&\x05start\x08complete\x04fail\x06cancel\x04skip\x07timeou\
+t\x05retry\x07inbound\x08outbound\x04send\x07receive\x07connect\x0adisconnect\x09\
+reconnect\x05spawn\x04kill\x04tick\x07trigger\x08schedule\x07approve\x06reject\x05\
+defer\x04read\x05write\x06delete\x0blist-action\x05query\x06invoke\x08dispatch\x07\
+resolve\x08register\x0aunregister\x04load\x04save\x07migrate\x08validate\x04note\
+\x0cmemory-audit\x04\0\x0dplugin-action\x03\0\x04\x01m\x02\x07success\x07failure\
+\x04\0\x0eplugin-outcome\x03\0\x06\x01k\x07\x01kw\x01k\x01\x01r\x06\x0dfunction-\
+names\x06action\x05\x07outcome\x08\x0bduration-ms\x09\x05attrs\x0a\x07messages\x04\
+\0\x0cplugin-event\x03\0\x0b\x01@\x02\x05level\x03\x05event\x0c\x01\0\x04\0\x0al\
+og-record\x01\x0d\x03\0\x1dzeroclaw:plugin/logging@0.1.0\x05\x02\x01B\x03\x01@\0\
+\0s\x04\0\x07version\x01\0\x04\0\x06author\x01\0\x04\0!zeroclaw:plugin/plugin-in\
+fo@0.1.0\x05\x03\x01B\x0d\x02\x03\x02\x01\x01\x04\0\x0bjson-string\x03\0\0\x01ks\
+\x01r\x03\x07success\x7f\x06outputs\x05error\x02\x04\0\x0btool-result\x03\0\x03\x01\
+@\0\0s\x04\0\x04name\x01\x05\x04\0\x0bdescription\x01\x05\x01@\0\0\x01\x04\0\x11\
+parameters-schema\x01\x06\x01j\x01\x04\x01s\x01@\x01\x04args\x01\0\x07\x04\0\x07\
+execute\x01\x08\x04\0\x1azeroclaw:plugin/tool@0.1.0\x05\x04\x04\0!zeroclaw:plugi\
+n/tool-plugin@0.1.0\x04\0\x0b\x11\x01\0\x0btool-plugin\x03\0\0\0G\x09producers\x01\
+\x0cprocessed-by\x02\x0dwit-component\x070.227.1\x10wit-bindgen-rust\x060.41.0";
 #[inline(never)]
 #[doc(hidden)]
 pub fn __link_custom_section_describing_imports() {
