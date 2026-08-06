@@ -69,7 +69,8 @@ impl Guest for SafeSpendPlugin {
                     id: "ERR_EMPTY_RECIPIENT".to_string(),
                     title: "Missing Recipient Address".to_string(),
                     severity: "Critical".to_string(),
-                    reason: "The transaction recipient address is completely missing or empty.".to_string(),
+                    reason: "The transaction recipient address is completely missing or empty."
+                        .to_string(),
                     recommendation: "Provide a valid base58 Solana target address.".to_string(),
                 });
                 ""
@@ -110,7 +111,10 @@ impl Guest for SafeSpendPlugin {
                     id: "ERR_ZERO_AMOUNT".to_string(),
                     title: "Zero or Negative Amount".to_string(),
                     severity: "Critical".to_string(),
-                    reason: format!("The specified transfer amount ({}) is zero or strictly negative.", amt),
+                    reason: format!(
+                        "The specified transfer amount ({}) is zero or strictly negative.",
+                        amt
+                    ),
                     recommendation: "Define a positive numerical limit to execute.".to_string(),
                 });
             }
@@ -124,8 +128,13 @@ impl Guest for SafeSpendPlugin {
                     id: "WARN_TOKEN_SYMBOL_LONG".to_string(),
                     title: "Suspicious Token Symbol Length".to_string(),
                     severity: "Warning".to_string(),
-                    reason: format!("The requested token symbol '{}' exceeds standard length conventions.", token),
-                    recommendation: "Ensure this contract interact specifies an authentic Spl token natively.".to_string(),
+                    reason: format!(
+                        "The requested token symbol '{}' exceeds standard length conventions.",
+                        token
+                    ),
+                    recommendation:
+                        "Ensure this contract interact specifies an authentic Spl token natively."
+                            .to_string(),
                 });
             }
         }
@@ -169,7 +178,8 @@ mod tests {
             "sender": "11111111111111111111111111111111",
             "recipient": "4q7177B43973xX8j1tW32h5J2mG817E2n",
             "amount": 1.5
-        }).to_string();
+        })
+        .to_string();
 
         let result = SafeSpendPlugin::execute(args).expect("Failed to execute");
         assert!(result.success);
@@ -181,20 +191,22 @@ mod tests {
         let args = serde_json::json!({
             "sender": "11111111111111111111111111111111",
             "amount": 1.5
-        }).to_string();
+        })
+        .to_string();
 
         let result = SafeSpendPlugin::execute(args).expect("Failed execution");
         assert!(result.output.contains("ERR_EMPTY_RECIPIENT"));
         assert!(result.output.contains("\"is_safe\": false"));
     }
-    
+
     #[test]
     fn test_negative_amount() {
         let args = serde_json::json!({
             "sender": "11111111111111111111111111111111",
             "recipient": "4q7177B43973xX8j1tW32h5J2mG817E2n",
             "amount": -50.0
-        }).to_string();
+        })
+        .to_string();
 
         let result = SafeSpendPlugin::execute(args).expect("Execution fault");
         assert!(result.output.contains("ERR_ZERO_AMOUNT"));

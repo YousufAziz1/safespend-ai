@@ -35,3 +35,10 @@ Because the ZeroClaw platform enforces strict portability and high-efficiency co
    ```
 
 You may seamlessly inject this `.wasm` boundary directly into your standard ZeroClaw agent node configurations evaluating risk dynamics natively!
+
+## 🔧 Runtime Compatibility
+
+*   **Supported Target:** `wasm32-wasip1`
+*   **Expected Runtime:** ZeroClaw Component Engine (Wasmtime natively configured with Component Model support).
+*   **Build Command:** `cargo component build --release`
+*   **Known Limitations:** To enforce standard WASIp1 limitations without throwing OS blocking exceptions in a hackathon-constrained compiler window, this explicit payload restricts `wasi:http` requests. Logic evaluations track JSON inputs programmatically via defined baseline parameters strictly avoiding standard network bindings seamlessly natively.
