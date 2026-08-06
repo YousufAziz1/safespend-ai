@@ -87,86 +87,102 @@ impl Guest for SafeSpendPlugin {
         };
 
         if !recipient_str.is_empty() {
-            // Validate Base58 & Invalid Alphabet
-            match decode_address(recipient_str) {
-                Ok(bytes) => {
-                    // Exact 32-byte public key mapping
-                    if bytes.len() != 32 {
+            // Buffer Limit (DOS Protection against arbitrary WASM allocations)
+            if recipient_str.len() > 44 {
+                is_safe = false;
+                rules_triggered.push(RiskRule {
+                    id: "ERR_PAYLOAD_TOO_LARGE".to_string(),
+                    title: "Buffer Limit Exceeded".to_string(),
+                    severity: "Critical".to_string(),
+                    reason: "Receiver address size structurally violates mathematical Canonical length ceilings natively.".to_string(),
+                    recommendation: "Reject non-standard derivations immediately.".to_string(),
+                });
+            } else {
+                // Validate Base58 & Invalid Alphabet
+                match decode_address(recipient_str) {
+                    Ok(bytes) => {
+                        // Exact 32-byte public key mapping
+                        if bytes.len() != 32 {
+                            is_safe = false;
+                            rules_triggered.push(RiskRule {
+                                id: "ERR_INVALID_PUBKEY_LENGTH".to_string(),
+                                title: "Invalid Pubkey Byte Length".to_string(),
+                                severity: "Critical".to_string(),
+                                reason: format!("Decoded representation is {} bytes, strictly failing the 32-byte canonical constraint.", bytes.len()),
+                                recommendation: "Verify destination address.".to_string(),
+                            });
+                        } else {
+                            decoded_recipient = Some(bytes);
+                        }
+                    }
+                    Err(e) => {
                         is_safe = false;
                         rules_triggered.push(RiskRule {
-                            id: "ERR_INVALID_PUBKEY_LENGTH".to_string(),
-                            title: "Invalid Pubkey Byte Length".to_string(),
+                            id: "ERR_BASE58_DECODE_FAIL".to_string(),
+                            title: "Base58 Parsing Fault".to_string(),
                             severity: "Critical".to_string(),
-                            reason: format!("Decoded representation is {} bytes, strictly failing the 32-byte canonical constraint.", bytes.len()),
-                            recommendation: "Verify destination address.".to_string(),
+                            reason: format!(
+                                "The target string failed mathematical Base58 mapping. Cause: {}",
+                                e
+                            ),
+                            recommendation: "Ensure string excludes invalid alphabets (0, O, I, l)."
+                                .to_string(),
                         });
-                    } else {
-                        decoded_recipient = Some(bytes);
                     }
                 }
-                Err(e) => {
+
+                // Target overlaps Core System Contracts
+                if recipient_str == SYSTEM_PROGRAM_ID {
                     is_safe = false;
                     rules_triggered.push(RiskRule {
-                        id: "ERR_BASE58_DECODE_FAIL".to_string(),
-                        title: "Base58 Parsing Fault".to_string(),
+                        id: "ERR_SYSTEM_PROGRAM_TARGET".to_string(),
+                        title: "Native System Program Injection".to_string(),
                         severity: "Critical".to_string(),
-                        reason: format!(
-                            "The target string failed mathematical Base58 mapping. Cause: {}",
-                            e
-                        ),
-                        recommendation: "Ensure string excludes invalid alphabets (0, O, I, l)."
-                            .to_string(),
+                        reason: "You are attempting to transfer SOL directly to the Solana System Program which operates without owner limits.".to_string(),
+                        recommendation: "Change recipient immediately.".to_string(),
+                    });
+                } else if recipient_str == TOKEN_PROGRAM_ID {
+                    is_safe = false;
+                    rules_triggered.push(RiskRule {
+                        id: "ERR_TOKEN_PROGRAM_TARGET".to_string(),
+                        title: "SPL Token Program Injection".to_string(),
+                        severity: "Critical".to_string(),
+                        reason: "Direct value transfers to the SPL Token Program instruction executable are lost.".to_string(),
+                        recommendation: "Target a standard generated token account.".to_string(),
                     });
                 }
             }
-
-            // Target overlaps Core System Contracts
-            if recipient_str == SYSTEM_PROGRAM_ID {
-                is_safe = false;
-                rules_triggered.push(RiskRule {
-                    id: "ERR_SYSTEM_PROGRAM_TARGET".to_string(),
-                    title: "Native System Program Injection".to_string(),
-                    severity: "Critical".to_string(),
-                    reason: "You are attempting to transfer SOL directly to the Solana System Program which operates without owner limits.".to_string(),
-                    recommendation: "Change recipient immediately.".to_string(),
-                });
-            } else if recipient_str == TOKEN_PROGRAM_ID {
-                is_safe = false;
-                rules_triggered.push(RiskRule {
-                    id: "ERR_TOKEN_PROGRAM_TARGET".to_string(),
-                    title: "SPL Token Program Injection".to_string(),
-                    severity: "Critical".to_string(),
-                    reason: "Direct value transfers to the SPL Token Program instruction executable are lost.".to_string(),
-                    recommendation: "Target a standard generated token account.".to_string(),
-                });
-            }
         }
 
-        // 3. Sender Verification and Duplicate/Self Transfer
+        // 3. Sender Verification and Duplicate/Self Transfer (with Memory Allocation Defenses)
         if let Some(s) = &req.sender {
-            if s.trim() == recipient_str {
-                is_safe = false;
-                rules_triggered.push(RiskRule {
-                    id: "WARN_SELF_TRANSFER".to_string(),
-                    title: "Sender & Recipient Match".to_string(),
-                    severity: "Warning".to_string(),
-                    reason: "Transferring bounds onto the exact originating sender.".to_string(),
-                    recommendation: "Avoid duplicate targeting.".to_string(),
-                });
-            } else if let Some(ref rec_bytes) = decoded_recipient {
-                // Determine equality through decoding mapping to catch canonical duplicates
-                if let Ok(sender_bytes) = decode_address(s.trim()) {
-                    if sender_bytes.len() == 32 && sender_bytes == *rec_bytes {
-                        is_safe = false;
-                        rules_triggered.push(RiskRule {
-                            id: "WARN_CANONICAL_DUPLICATE_TRANSFER".to_string(),
-                            title: "Decoded Match Verification".to_string(),
-                            severity: "Warning".to_string(),
-                            reason:
-                                "Sender and Target decode to identical 32-byte arrays securely."
-                                    .to_string(),
-                            recommendation: "Nullify self-execution.".to_string(),
-                        });
+            let s_trim = s.trim();
+            if s_trim.len() <= 44 {
+                if s_trim == recipient_str {
+                    is_safe = false;
+                    rules_triggered.push(RiskRule {
+                        id: "WARN_SELF_TRANSFER".to_string(),
+                        title: "Sender & Recipient Match".to_string(),
+                        severity: "Warning".to_string(),
+                        reason: "Transferring bounds onto the exact originating sender."
+                            .to_string(),
+                        recommendation: "Avoid duplicate targeting.".to_string(),
+                    });
+                } else if let Some(ref rec_bytes) = decoded_recipient {
+                    // Determine equality through decoding mapping to catch canonical duplicates
+                    if let Ok(sender_bytes) = decode_address(s_trim) {
+                        if sender_bytes.len() == 32 && sender_bytes == *rec_bytes {
+                            is_safe = false;
+                            rules_triggered.push(RiskRule {
+                                id: "WARN_CANONICAL_DUPLICATE_TRANSFER".to_string(),
+                                title: "Decoded Match Verification".to_string(),
+                                severity: "Warning".to_string(),
+                                reason:
+                                    "Sender and Target decode to identical 32-byte arrays securely."
+                                        .to_string(),
+                                recommendation: "Nullify self-execution.".to_string(),
+                            });
+                        }
                     }
                 }
             }
