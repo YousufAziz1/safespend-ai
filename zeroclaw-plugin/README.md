@@ -28,3 +28,8 @@ Because the ZeroClaw platform enforces strict portability and high-efficiency co
    ```
 
 You may seamlessly inject this `.wasm` boundary directly into your standard ZeroClaw agent node configurations evaluating risk dynamics organically!
+
+## Known Limitations
+
+- The current Rust plugin demonstrates the ZeroClaw integration and component model organically.
+- Live provider requests are planned for a future iteration as WASI HTTP support and runtime integration matures.
