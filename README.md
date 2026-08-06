@@ -1,116 +1,59 @@
 <div align="center">
 
-# 🛡️ SafeSpend AI
+# 🦞 SafeSpend AI — ZeroClaw Security Plugin
 
-**AI-powered Solana Payment Security Copilot**
+**Deterministic WebAssembly Security boundaries for Solana Transactors**
 
 <p>
-  <i>Analyze. Explain. Simulate. Protect.</i>
+  <i>Validate. Protect. Execute.</i>
 </p>
 
 <p>
-  Protect Solana transactions before wallet signature using deterministic security analysis and an AI-powered copilot.
+  A lightweight, stateless Rust <code>wasm32-wasip1</code> plugin intercepting native ZeroClaw agent transactions enforcing hard deterministic rule matrices seamlessly before wallet signatures are queried.
 </p>
 
 <br />
 
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white) 
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) 
+![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white) 
+![WebAssembly](https://img.shields.io/badge/WebAssembly-654FF0?style=for-the-badge&logo=webassembly&logoColor=white) 
 ![Solana](https://img.shields.io/badge/Solana-14F195?style=for-the-badge&logo=solana&logoColor=white) 
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)
+![ZeroClaw](https://img.shields.io/badge/ZeroClaw-Orange?style=for-the-badge)
 
 <br />
 
 ### 🔗 Quick Links
 
-[**Live Demo**](https://safespend-ai.vercel.app) •
 [**GitHub Repository**](https://github.com/YousufAziz1/safespend-ai) •
-[**Demo Mode**](/demo) •
-[**Documentation**](docs/)
-
-<div align="center">
-  <a href="https://safespend-ai.vercel.app/demo" target="_blank">
-    <img src="docs/screenshots/demo.gif" alt="Animated Demo GIF" width="85%">
-  </a>
-</div>
-
-*(Full Demo Video Link: <b>Coming Soon</b>)*
+[**Threat Model**](docs/THREAT_MODEL.md) •
+[**Attack Transcript Evidence**](evidence/ATTACK_TRANSCRIPT.md) •
+[**Optional Demo Viz**](https://safespend-ai.vercel.app/demo)
 
 </div>
 
 ---
 
-## ✨ Features
-
-<details open>
-<summary><b>🧠 AI Copilot</b></summary>
-Natural language understanding that intuitively maps your intents. Resolves <code>base58</code> addresses to trusted names and provides actionable, context-aware suggestions during execution.
-</details>
-
-<details open>
-<summary><b>🛡️ Security Engine</b></summary>
-A multi-layered defense intercepting threats in milliseconds. Integrates <b>GoPlus</b> (global blacklists), <b>Helius</b> (wallet maturation/history), and <b>Birdeye</b> (token liquidity & honeypot checks) natively.
-</details>
-
-<details open>
-<summary><b>⚡ Simulation</b></summary>
-Executes live Web3 RPC Sandbox boundaries intercepting compute failures and reverts transparently across the blockchain prior to spending gas or signing with your wallet.
-</details>
-
-<details open>
-<summary><b>📊 Analytics</b></summary>
-Complete visualizations of your transactional risk distributions. Stores local, on-chain execution states mapped accurately for organic ledger visibility over time.
-</details>
-
-<details open>
-<summary><b>⚙️ Policy Engine</b></summary>
-Enforces custom maximum threshold budget constraints linked specifically to contacts, preventing dangerous drains dynamically.
-</details>
-
-<details open>
-<summary><b>🧑‍⚖️ Judge Demo</b></summary>
-An interactive, automated 8-step orchestrator designed precisely to verify exact execution loops and AI mappings natively directly on the platform.
-</details>
-
-<details open>
-<summary><b>📕 History</b></summary>
-Complete execution ledger storing final confirmed RPC signatures securely accessible strictly within the browser safely.
-</details>
-
-<details open>
-<summary><b>🦞 ZeroClaw Rust Plugin</b></summary>
-The deterministic security engine has been ported to a standalone Rust `wasm32-wasip1` component, implementing exact ZeroClaw WIT traits natively for execution within the sandboxed agent runtime!
-</details>
+## 🛡️ Security Model
+- **Custody Tier: T0**
+- **No Keystore Limits:** The plugin NEVER stores, touches, or requests native private keys natively. 
+- **Human Authority:** The agent simply evaluates and suggests; the human always signs transactions.
+- **Deterministic Pre-Execution:** Operates entirely autonomously processing structural parameters avoiding LLM hallucination overrides dynamically natively.
 
 ---
 
-## 📸 Screenshots
+## 🏗️ The ZeroClaw Component Model
 
-<div align="center">
-  <img src="docs/screenshots/dashboard.png" alt="Dashboard" width="48%">
-  <img src="docs/screenshots/demo.png" alt="Judge Demo Mode" width="48%">
-  
-  <br/><br/>
-  
-  <img src="docs/screenshots/copilot.png" alt="Copilot Intent Parser" width="48%">
-  <img src="docs/screenshots/analytics.png" alt="Risk Analytics" width="48%">
+SafeSpend AI is built first and foremost as a standard **ZeroClaw `tool` Plugin**. 
+It guarantees **zero `solana-sdk` dependency bloat**, exporting exact `wit` bindings evaluating `base58` destination arrays reliably within the host `wasm32-wasip1` sandbox execution. 
 
-  <br/><br/>
+### Implemented Native Checks
 
-  <img src="docs/screenshots/execution-plan.png" alt="Local Sandbox Planner" width="31%">
-  <img src="docs/screenshots/security.png" alt="GoPlus Security Block" width="31%">
-  <img src="docs/screenshots/history.png" alt="Transaction Ledger" width="31%">
-</div>
-
----
-
-## 🏗️ Architecture
-
-SafeSpend AI's architecture utilizes deterministic rule-chains, replacing LLM hallucinations with strict functional boundaries that intercept intent sequences natively through `Action -> Extract -> Analyze -> Display -> Simulate -> Sign`.
-
-👉 **[View the Complete System Flowcharts and Diagrams](docs/ARCHITECTURE.md)**
+| Rule ID | Check | Severity | Deterministic Logic |
+|---|---|---|---|
+| `ERR_EMPTY_RECIPIENT` | Missing Recipient | **Critical** | Rejects `null` or whitespace-only destination targets. |
+| `ERR_INVALID_BASE58_LENGTH` | Address Length | **Critical** | Triggers if string length is strictly outside Solana Base58 standards (`< 32` or `> 44`). |
+| `WARN_SELF_TRANSFER` | Duplicate Recipient | **Warning** | Flags execution if the `sender` and `recipient` addresses correlate identically statically natively. |
+| `ERR_ZERO_AMOUNT` | Invalid Amount | **Critical** | Evaluates boundaries to ensure token values are expressly positive scalars securely (`> 0.0`). |
+| `WARN_TOKEN_SYMBOL_LONG` | Invalid Token Symbol | **Warning** | Restricts standard `spl` symbols to conventional lengths rejecting unreadable arbitrary tokens natively (`> 10` chars). |
 
 ---
 
@@ -118,91 +61,55 @@ SafeSpend AI's architecture utilizes deterministic rule-chains, replacing LLM ha
 
 ```text
 safespend-ai/
-├── app/                  # Next.js App Router (Protected Pages & Dashboard)
-├── components/           # Reusable UI Blocks (Shadcn + Radix)
-├── hooks/                # Web3 & UI reactive lifecycles
-├── lib/                  
-│   ├── copilot/          # NLP, Planners, Memory, Explainer 
-│   ├── security/         # Multi-Provider Security API Engines
-│   └── storage/          # Local Storage Ledger 
-├── providers/            # Top-level Global Contexts
-├── docs/                 # Hackathon Submission Documents & Designs
-├── types/                # Typescript Contract Definitions
-└── zeroclaw-plugin/      # 🦞 Official ZeroClaw Rust/WASM Security Plugin!
+├── zeroclaw-plugin/      # 🦞 Primary Project: ZeroClaw Rust/WASM Security Plugin
+│   ├── src/lib.rs        # Core deterministic logic engine
+│   └── wit/world.wit     # Explicit ZeroClaw trait interfaces
+├── docs/                 # Documentation (Threat Models, Architecture, Judge FAQs)
+├── evidence/             # Attack transcripts and test case executions
+└── app/                  # 🌐 Optional Next.js Dashboard Visualizer 
 ```
 
 ---
 
-## 🛠️ Tech Stack
+## 🖼️ Optional Dashboard Visualizer
+
+While the core project resides in the `/zeroclaw-plugin` backend, this repository natively includes a full **Next.js/React** web dashboard serving strictly as an optional visual front-end simulation allowing judges to test scenarios rapidly organically.
 
 <div align="center">
-
-| Domain | Technology |
-|---|---|
-| **Frontend** | Next.js 14, React, TailwindCSS, Framer Motion, Shadcn UI |
-| **Blockchain** | Solana Web3.js, Wallet Adapter, Phantom |
-| **Security APIs** | GoPlus Security, Helius RPC, Birdeye Data |
-| **State** | React Context & Native LocalStorage |
-| **Deployment** | Vercel Serverless Functions |
-
+  <img src="docs/screenshots/demo.gif" alt="Animated Demo GIF" width="85%">
 </div>
+
+*(Full Demo Video Link: <b>Coming Soon</b>)*
 
 ---
 
-## 🚀 Installation & Setup
+## 🚀 Installation & Setup (ZeroClaw Plugin)
 
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/YousufAziz1/safespend-ai.git
-   cd safespend-ai
+   cd safespend-ai/zeroclaw-plugin
    ```
 
-2. **Install dependencies:**
+2. **Install Rust and the Component compiler:**
    ```bash
-   pnpm install
+   cargo install cargo-component
    ```
 
-3. **Configure Environment:**
+3. **Build the WASM payload natively:**
    ```bash
-   cp .env.example .env.local
+   cargo component build --release
    ```
-   *Edit `.env.local` to securely include your keys. (See Environment Variables below)*
 
-4. **Start the application:**
+4. **Run Native Logic Fuzzers & Tests:**
    ```bash
-   pnpm dev
+   cargo test
    ```
-
----
-
-## 🔐 Environment Variables
-
-| Variable | Description |
-|---|---|
-| `NEXT_PUBLIC_HELIUS_API_KEY` | Required to route wallet creation dates and history metrics against Helius RPC nodes safely. |
-| `NEXT_PUBLIC_GOPLUS_API_KEY` | Authenticates REST queries scanning active global phishing links and malicious smart contracts. |
-| `NEXT_PUBLIC_BIRDEYE_API_KEY` | Provides GraphQL endpoints inspecting SPL Token mechanics, detecting honeypots and low liquidity. |
-
----
-
-## 🧭 Usage
-
-- **Dashboard:** At-a-glance active overview visualizing recent interaction risks and execution history.
-- **Send:** Traditional Web3 primitive form wrapped securely around the Multi-Provider execution checks.
-- **Copilot:** The transactional NLP brain parsing natural intents and orchestrating live explanations smoothly.
-- **Demo:** Specifically engineered Orchestrator automatically tracking hackathon edge-cases flawlessly.
-- **Analytics:** Aggregate risk modeling plotting deployment safety dynamically mapping interactions natively.
-- **History:** Verifiable local ledger extracting final RPC payload histories.
 
 ---
 
 ## 🤝 Contributors
-
-Built and maintained by **Yousuf Aziz**.
-
-*AI-assisted development workflows were used during implementation and documentation.*
-
----
+Built computationally mapping ZeroClaw standards explicitly by **Yousuf Aziz**.
 
 ## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.

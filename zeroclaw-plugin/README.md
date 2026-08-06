@@ -1,14 +1,21 @@
 # SafeSpend AI - ZeroClaw Integration 🦞
 
-This directory contains the completely autonomous, Rust-based ZeroClaw plugin implementation of our Multi-Provider Security Engine!
+This directory hosts the primary mechanism of the SafeSpend ecosystem: a completely autonomous, Rust-based ZeroClaw plugin implementation defining local deterministic security evaluations.
 
-Because the ZeroClaw platform enforces strict portability and high-efficiency constraints via the WebAssembly (WASM) Component Model, SafeSpend AI's logic has been fundamentally extracted from our standard Next.js TypeScript orchestrators and transplanted natively into this standalone module.
+Because the ZeroClaw platform enforces strict portability and high-efficiency constraints via the WebAssembly (WASM) Component Model, SafeSpend AI's logic implements Native Pre-Execution rules locally without extracting dependencies onto untrusted nodes dynamically natively.
 
-## 🛠️ Architecture
+## 🛠️ Security Model (T0)
 
-*   **WASM Component Model:** Built utilizing `cargo-component` exporting explicit functions to the `zeroclaw:plugin/tool` ecosystem.
-*   **Zero Dependencies:** The plugin is 100% independent of typical Web3 bloat (such as `solana-sdk` or frontend libraries), compiling down to a highly optimized `wasm32-wasip1` payload that the ZeroClaw core agent can securely sandbox!
-*   **Deterministic Security Engine:** Replaces generic LLM hallucinated analysis with a firm Boolean constraint checking mechanism exposing risk boundaries directly to the conversational agents natively.
+- **Absolute Zero Custody:** This plugin never handles, stores, or processes wallet private keys or arbitrary signature blocks seamlessly! 
+- **Pre-execution Boundary:** Acts solely as a deterministic gate checking boundaries before allowing the user to organically sign natively.
+
+### Implemented Checks
+1. **Address Formatting Limits** (Solana Base58 validations).
+2. **Missing/Empty Parameters** checks accurately.
+3. **Execution Anomalies** (e.g. self-transfers resulting in lost gas).
+4. **Volume Fences** (Sub-zero evaluation and negative bounds).
+
+*Note: Previous versions assumed generic REST bindings to Birdeye/GoPlus natively. To fulfill hackathon `zero-dependency` limits, these were deprecated in favor of verified WASM testing loops securely resolving strictly implemented local checks organically.*
 
 ## 🚀 Building the Plugin
 
@@ -22,14 +29,9 @@ Because the ZeroClaw platform enforces strict portability and high-efficiency co
    cargo component build --release
    ```
 
-3. The final Component file is located safely within:
-   ```text
-   target/wasm32-wasip1/release/zeroclaw_plugin.wasm
+3. Execute deterministic testing environments.
+   ```bash
+   cargo test
    ```
 
-You may seamlessly inject this `.wasm` boundary directly into your standard ZeroClaw agent node configurations evaluating risk dynamics organically!
-
-## Known Limitations
-
-- The current Rust plugin demonstrates the ZeroClaw integration and component model organically.
-- Live provider requests are planned for a future iteration as WASI HTTP support and runtime integration matures.
+You may seamlessly inject this `.wasm` boundary directly into your standard ZeroClaw agent node configurations evaluating risk dynamics natively!
