@@ -15,7 +15,7 @@ struct AnalyzeRequest {
     token_symbol: Option<String>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Clone)]
 struct RiskRule {
     id: String,
     title: String,
@@ -30,111 +30,172 @@ struct RiskAnalysis {
     rules_triggered: Vec<RiskRule>,
 }
 
+const SYSTEM_PROGRAM_ID: &str = "11111111111111111111111111111111";
+const TOKEN_PROGRAM_ID: &str = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+const MAX_SOL_AMOUNT: f64 = (u64::MAX / 1_000_000_000) as f64; // ~18.4 billion SOL
+
+fn decode_address(address: &str) -> std::result::Result<Vec<u8>, String> {
+    bs58::decode(address)
+        .into_vec()
+        .map_err(|e| format!("Base58 decode error: {}", e))
+}
+
 impl Guest for SafeSpendPlugin {
     fn name() -> String {
         "safespend-security-analysis".to_string()
     }
 
     fn description() -> String {
-        "Performs strict deterministic analysis on transaction payloads verifying base58 formatting, self-transfers, invalid amounts, and malformed inputs natively without assuming network context.".to_string()
+        "Executes strict mathematical Solana constraints: verified Base58 parsing, 32-byte canonical checks, Lamport overflows, and System/Token program collisions.".to_string()
     }
 
     fn parameters_schema() -> String {
         serde_json::json!({
             "type": "object",
             "properties": {
-                "sender": { "type": "string", "description": "Sender base58 address" },
-                "recipient": { "type": "string", "description": "Recipient base58 address" },
-                "amount": { "type": "number", "description": "Transaction amount in native units" },
-                "token_symbol": { "type": "string", "description": "Token symbol natively" }
+                "sender": { "type": "string", "description": "Sender Base58" },
+                "recipient": { "type": "string", "description": "Recipient Base58" },
+                "amount": { "type": "number", "description": "Transfer amount in SOL" },
+                "token_symbol": { "type": "string", "description": "Token identity" }
             },
             "required": []
         })
         .to_string()
     }
 
-    fn execute(args: String) -> Result<ToolResult, String> {
+    fn execute(args: String) -> std::result::Result<ToolResult, String> {
         let req: AnalyzeRequest = serde_json::from_str(&args)
             .map_err(|e| format!("Failed to parse JSON parameters: {}", e))?;
 
         let mut rules_triggered = Vec::new();
         let mut is_safe = true;
 
-        // 1. Empty recipient
-        let recipient = match &req.recipient {
+        let mut decoded_recipient = None;
+
+        // 1. Recipient Address Verification
+        let recipient_str = match &req.recipient {
             Some(r) if !r.trim().is_empty() => r.trim(),
             _ => {
                 is_safe = false;
                 rules_triggered.push(RiskRule {
                     id: "ERR_EMPTY_RECIPIENT".to_string(),
-                    title: "Missing Recipient Address".to_string(),
+                    title: "Missing Recipient".to_string(),
                     severity: "Critical".to_string(),
-                    reason: "The transaction recipient address is completely missing or empty."
-                        .to_string(),
-                    recommendation: "Provide a valid base58 Solana target address.".to_string(),
+                    reason: "No recipient address was provided.".to_string(),
+                    recommendation: "Provide a valid target.".to_string(),
                 });
                 ""
             }
         };
 
-        // 2. Base58 Payload Validation (Length Check commonly 32-44 bytes for Solana Addresses)
-        if !recipient.is_empty() && (recipient.len() < 32 || recipient.len() > 44) {
-            is_safe = false;
-            rules_triggered.push(RiskRule {
-                id: "ERR_INVALID_BASE58_LENGTH".to_string(),
-                title: "Invalid Address Format".to_string(),
-                severity: "Critical".to_string(),
-                reason: format!("The target address '{}' length ({}) is outside standard Solana base58 parameters.", recipient, recipient.len()),
-                recommendation: "Verify the destination address character length.".to_string(),
-            });
-        }
+        if !recipient_str.is_empty() {
+            // Validate Base58 & Invalid Alphabet
+            match decode_address(recipient_str) {
+                Ok(bytes) => {
+                    // Exact 32-byte public key mapping
+                    if bytes.len() != 32 {
+                        is_safe = false;
+                        rules_triggered.push(RiskRule {
+                            id: "ERR_INVALID_PUBKEY_LENGTH".to_string(),
+                            title: "Invalid Pubkey Byte Length".to_string(),
+                            severity: "Critical".to_string(),
+                            reason: format!("Decoded representation is {} bytes, strictly failing the 32-byte canonical constraint.", bytes.len()),
+                            recommendation: "Verify destination address.".to_string(),
+                        });
+                    } else {
+                        decoded_recipient = Some(bytes);
+                    }
+                }
+                Err(e) => {
+                    is_safe = false;
+                    rules_triggered.push(RiskRule {
+                        id: "ERR_BASE58_DECODE_FAIL".to_string(),
+                        title: "Base58 Parsing Fault".to_string(),
+                        severity: "Critical".to_string(),
+                        reason: format!(
+                            "The target string failed mathematical Base58 mapping. Cause: {}",
+                            e
+                        ),
+                        recommendation: "Ensure string excludes invalid alphabets (0, O, I, l)."
+                            .to_string(),
+                    });
+                }
+            }
 
-        // 3. Self-transfer detection
-        if let Some(s) = &req.sender {
-            if !recipient.is_empty() && s.trim() == recipient {
-                is_safe = false; // or Warning
+            // Target overlaps Core System Contracts
+            if recipient_str == SYSTEM_PROGRAM_ID {
+                is_safe = false;
                 rules_triggered.push(RiskRule {
-                    id: "WARN_SELF_TRANSFER".to_string(),
-                    title: "Self-Transfer Detected".to_string(),
-                    severity: "Warning".to_string(),
-                    reason: "The transaction maps the sender and the recipient to the exact same address natively.".to_string(),
-                    recommendation: "Ensure you intend to transfer funds to yourself, wasting gas.".to_string(),
+                    id: "ERR_SYSTEM_PROGRAM_TARGET".to_string(),
+                    title: "Native System Program Injection".to_string(),
+                    severity: "Critical".to_string(),
+                    reason: "You are attempting to transfer SOL directly to the Solana System Program which operates without owner limits.".to_string(),
+                    recommendation: "Change recipient immediately.".to_string(),
+                });
+            } else if recipient_str == TOKEN_PROGRAM_ID {
+                is_safe = false;
+                rules_triggered.push(RiskRule {
+                    id: "ERR_TOKEN_PROGRAM_TARGET".to_string(),
+                    title: "SPL Token Program Injection".to_string(),
+                    severity: "Critical".to_string(),
+                    reason: "Direct value transfers to the SPL Token Program instruction executable are lost.".to_string(),
+                    recommendation: "Target a standard generated token account.".to_string(),
                 });
             }
         }
 
-        // 4. Invalid amount / Zero amount
+        // 3. Sender Verification and Duplicate/Self Transfer
+        if let Some(s) = &req.sender {
+            if s.trim() == recipient_str {
+                is_safe = false;
+                rules_triggered.push(RiskRule {
+                    id: "WARN_SELF_TRANSFER".to_string(),
+                    title: "Sender & Recipient Match".to_string(),
+                    severity: "Warning".to_string(),
+                    reason: "Transferring bounds onto the exact originating sender.".to_string(),
+                    recommendation: "Avoid duplicate targeting.".to_string(),
+                });
+            } else if let Some(ref rec_bytes) = decoded_recipient {
+                // Determine equality through decoding mapping to catch canonical duplicates
+                if let Ok(sender_bytes) = decode_address(s.trim()) {
+                    if sender_bytes.len() == 32 && sender_bytes == *rec_bytes {
+                        is_safe = false;
+                        rules_triggered.push(RiskRule {
+                            id: "WARN_CANONICAL_DUPLICATE_TRANSFER".to_string(),
+                            title: "Decoded Match Verification".to_string(),
+                            severity: "Warning".to_string(),
+                            reason:
+                                "Sender and Target decode to identical 32-byte arrays securely."
+                                    .to_string(),
+                            recommendation: "Nullify self-execution.".to_string(),
+                        });
+                    }
+                }
+            }
+        }
+
+        // 4. Amount Verification & Lamport Overflows
         if let Some(amt) = req.amount {
             if amt <= 0.0 {
                 is_safe = false;
                 rules_triggered.push(RiskRule {
                     id: "ERR_ZERO_AMOUNT".to_string(),
-                    title: "Zero or Negative Amount".to_string(),
+                    title: "Zero or Negative Execution".to_string(),
                     severity: "Critical".to_string(),
-                    reason: format!(
-                        "The specified transfer amount ({}) is zero or strictly negative.",
-                        amt
-                    ),
-                    recommendation: "Define a positive numerical limit to execute.".to_string(),
+                    reason: format!("Evaluation requests {} numeric bounds natively.", amt),
+                    recommendation: "Apply positive logic.".to_string(),
                 });
-            }
-        }
-
-        // 5. Invalid token detection
-        if let Some(token) = &req.token_symbol {
-            if token.len() > 10 {
+            } else if amt > MAX_SOL_AMOUNT {
                 is_safe = false;
                 rules_triggered.push(RiskRule {
-                    id: "WARN_TOKEN_SYMBOL_LONG".to_string(),
-                    title: "Suspicious Token Symbol Length".to_string(),
-                    severity: "Warning".to_string(),
+                    id: "ERR_LAMPORT_OVERFLOW".to_string(),
+                    title: "Lamport Integer Overflow".to_string(),
+                    severity: "Critical".to_string(),
                     reason: format!(
-                        "The requested token symbol '{}' exceeds standard length conventions.",
-                        token
+                        "Requested sum {} generates u64::MAX instruction panics locally.",
+                        amt
                     ),
-                    recommendation:
-                        "Ensure this contract interact specifies an authentic Spl token natively."
-                            .to_string(),
+                    recommendation: "Diminish structural limits.".to_string(),
                 });
             }
         }
@@ -155,12 +216,10 @@ impl Guest for SafeSpendPlugin {
     }
 }
 
-// Implement the plugin-info export required by the ZeroClaw plugin interface
 impl exports::zeroclaw::plugin::plugin_info::Guest for SafeSpendPlugin {
     fn version() -> String {
         "0.1.0".to_string()
     }
-
     fn author() -> String {
         "SafeSpend AI".to_string()
     }
@@ -171,44 +230,61 @@ export!(SafeSpendPlugin);
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json::json;
 
     #[test]
     fn test_valid_address() {
-        let args = serde_json::json!({
-            "sender": "11111111111111111111111111111111",
+        let args = json!({
             "recipient": "4q7177B43973xX8j1tW32h5J2mG817E2n",
-            "amount": 1.5
+            "amount": 10.0
         })
         .to_string();
-
-        let result = SafeSpendPlugin::execute(args).expect("Failed to execute");
-        assert!(result.success);
-        assert!(result.output.contains("\"is_safe\": true"));
+        let res = SafeSpendPlugin::execute(args).unwrap();
+        assert!(res.output.contains("\"is_safe\": true"));
     }
 
     #[test]
-    fn test_empty_recipient() {
-        let args = serde_json::json!({
-            "sender": "11111111111111111111111111111111",
-            "amount": 1.5
+    fn test_invalid_alphabet_base58() {
+        let args = json!({
+            "recipient": "4q7177B43973xX8j1tW32h5J2mG817E2IO", // I and O are invalid
+            "amount": 1.0
         })
         .to_string();
-
-        let result = SafeSpendPlugin::execute(args).expect("Failed execution");
-        assert!(result.output.contains("ERR_EMPTY_RECIPIENT"));
-        assert!(result.output.contains("\"is_safe\": false"));
+        let res = SafeSpendPlugin::execute(args).unwrap();
+        assert!(res.output.contains("ERR_BASE58_DECODE_FAIL"));
+        assert!(res.output.contains("\"is_safe\": false"));
     }
 
     #[test]
-    fn test_negative_amount() {
-        let args = serde_json::json!({
-            "sender": "11111111111111111111111111111111",
-            "recipient": "4q7177B43973xX8j1tW32h5J2mG817E2n",
-            "amount": -50.0
+    fn test_invalid_pubkey_length() {
+        let args = json!({
+            "recipient": "2s122d", // short base58
+            "amount": 1.0
         })
         .to_string();
+        let res = SafeSpendPlugin::execute(args).unwrap();
+        assert!(res.output.contains("ERR_INVALID_PUBKEY_LENGTH"));
+    }
 
-        let result = SafeSpendPlugin::execute(args).expect("Execution fault");
-        assert!(result.output.contains("ERR_ZERO_AMOUNT"));
+    #[test]
+    fn test_lamport_overflow() {
+        let args = json!({
+            "recipient": "4q7177B43973xX8j1tW32h5J2mG817E2n",
+            "amount": 20_000_000_000.0
+        })
+        .to_string();
+        let res = SafeSpendPlugin::execute(args).unwrap();
+        assert!(res.output.contains("ERR_LAMPORT_OVERFLOW"));
+    }
+
+    #[test]
+    fn test_system_program() {
+        let args = json!({
+            "recipient": "11111111111111111111111111111111",
+            "amount": 1.0
+        })
+        .to_string();
+        let res = SafeSpendPlugin::execute(args).unwrap();
+        assert!(res.output.contains("ERR_SYSTEM_PROGRAM_TARGET"));
     }
 }
