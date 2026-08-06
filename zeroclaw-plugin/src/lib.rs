@@ -113,7 +113,7 @@ impl Guest for SafeSpendPlugin {
     }
 
     fn description() -> String {
-        "ZeroClaw Security Plugin: strict mathematical derivations and structured verdict matrices tracking velocities organically.".to_string()
+        "ZeroClaw Security Plugin: strict mathematical derivations and structured verdict matrices tracking velocities.".to_string()
     }
 
     fn parameters_schema() -> String {
@@ -154,7 +154,7 @@ impl Guest for SafeSpendPlugin {
         
         let mut final_verdict = Verdict::Allow;
         let mut final_code = codes::SUCCESS_ALLOW.to_string();
-        let mut final_reason = "Transaction structurally safe and mapped strictly within native execution thresholds.".to_string();
+        let mut final_reason = "Transaction safe and mapped strictly within native execution thresholds.".to_string();
 
         let mut apply_verdict = |v_state: Verdict, code: &str, reason: &str, rule: RiskRule| {
             rules_triggered.push(rule);
@@ -180,7 +180,7 @@ impl Guest for SafeSpendPlugin {
                 apply_verdict(
                     Verdict::Deny, 
                     codes::ERR_EMPTY_RECIPIENT, 
-                    "Evaluation mandates a valid receiver string natively.",
+                    "Evaluation mandates a valid receiver string.",
                     RiskRule {
                         id: codes::ERR_EMPTY_RECIPIENT.to_string(),
                         title: "Missing Recipient".to_string(),
@@ -199,12 +199,12 @@ impl Guest for SafeSpendPlugin {
                 apply_verdict(
                     Verdict::Deny,
                     codes::ERR_PAYLOAD_TOO_LARGE,
-                    "Payload structurally violates memory constraints preventing panics.",
+                    "Payload violates memory constraints preventing panics.",
                     RiskRule {
                         id: codes::ERR_PAYLOAD_TOO_LARGE.to_string(),
                         title: "Buffer Limit Exceeded".to_string(),
                         severity: "Critical".to_string(),
-                        reason: "Receiver address size structurally violates mathematical Canonical length ceilings natively.".to_string(),
+                        reason: "Receiver address size violates mathematical Canonical length ceilings.".to_string(),
                         recommendation: "Reject non-standard derivations immediately.".to_string(),
                     }
                 );
@@ -263,7 +263,7 @@ impl Guest for SafeSpendPlugin {
                     apply_verdict(
                         Verdict::Deny,
                         codes::ERR_TOKEN_PROGRAM_TARGET,
-                        "Origin execution program black-holing strictly trapped natively.",
+                        "Origin execution program black-holing strictly trapped.",
                         RiskRule {
                             id: codes::ERR_TOKEN_PROGRAM_TARGET.to_string(),
                             title: "SPL Token Program Injection".to_string(),
@@ -284,7 +284,7 @@ impl Guest for SafeSpendPlugin {
                     apply_verdict(
                         Verdict::RequireApproval,
                         codes::WARN_SELF_TRANSFER,
-                        "Originating signature loops recursively targeting sender structurally.",
+                        "Originating signature loops recursively targeting sender.",
                         RiskRule {
                             id: codes::WARN_SELF_TRANSFER.to_string(),
                             title: "Sender & Recipient Match".to_string(),
@@ -321,12 +321,12 @@ impl Guest for SafeSpendPlugin {
                 apply_verdict(
                     Verdict::Deny,
                     codes::ERR_ZERO_AMOUNT,
-                    "Values bound mathematically towards invalid execution integers explicitly natively.",
+                    "Values bound mathematically towards invalid execution integers explicitly.",
                     RiskRule {
                         id: codes::ERR_ZERO_AMOUNT.to_string(),
                         title: "Zero or Negative Execution".to_string(),
                         severity: "Critical".to_string(),
-                        reason: format!("Evaluation requests {} numeric bounds natively.", amt),
+                        reason: format!("Evaluation requests {} numeric bounds.", amt),
                         recommendation: "Apply positive logic.".to_string(),
                     }
                 );
@@ -354,7 +354,7 @@ impl Guest for SafeSpendPlugin {
                 apply_verdict(
                     Verdict::Deny,
                     codes::ERR_TX_LIMIT_EXCEEDED,
-                    "Target volume structurally exceeds the enforced physical maximum cap natively.",
+                    "Target volume exceeds the enforced physical maximum cap.",
                     RiskRule {
                         id: codes::ERR_TX_LIMIT_EXCEEDED.to_string(),
                         title: "Max Transaction Spend Exceeded".to_string(),
@@ -395,7 +395,7 @@ impl Guest for SafeSpendPlugin {
                         id: codes::WARN_VELOCITY_EXCEEDED.to_string(),
                         title: "Velocity Count Flag".to_string(),
                         severity: "Warning".to_string(),
-                        reason: "Requests evaluate structurally higher than standard bounds.".to_string(),
+                        reason: "Requests evaluate higher than standard bounds.".to_string(),
                         recommendation: "Check automated scripts tracking logic closures.".to_string(),
                     }
                 );
@@ -426,12 +426,12 @@ impl Guest for SafeSpendPlugin {
                 apply_verdict(
                     Verdict::RequireApproval,
                     codes::REQUIRE_APPROVAL_UNKNOWN,
-                    "Unknown physical evaluation vector structurally mandates signature verification.",
+                    "Unknown physical evaluation vector mandates signature verification.",
                     RiskRule {
                         id: codes::REQUIRE_APPROVAL_UNKNOWN.to_string(),
                         title: "Unknown Reputation Tier".to_string(),
                         severity: "Warning".to_string(),
-                        reason: "Address natively unmapped amongst current allow-listed matrices explicitly.".to_string(),
+                        reason: "Address unmapped amongst current allow-listed matrices explicitly.".to_string(),
                         recommendation: "Confirm intention manually.".to_string()
                     }
                 );

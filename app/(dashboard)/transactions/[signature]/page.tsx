@@ -68,7 +68,7 @@ export default function TransactionDetailsPage() {
         );
     }
 
-    // Synthesize unstored fields organically avoiding backend modification
+    // Synthesize unstored fields avoiding backend modification
     const isSafe = tx.riskLevel === 'safe' || (tx.riskLevel as string) === 'green';
     const isWarn = tx.riskLevel === 'warning' || (tx.riskLevel as string) === 'yellow';
 

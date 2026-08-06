@@ -122,7 +122,7 @@ export const analyzeToken = async (tokenAddress: string, retries = 3): Promise<B
             if (!response.ok) {
                 const bodyText = await response.text().catch(() => 'Unable to read response body');
 
-                logger.error(`[Birdeye Adapter] HTTP Failure executing analysis natively`, {
+                logger.error(`[Birdeye Adapter] HTTP Failure executing analysis`, {
                     url: safeEndpoint,
                     status: response.status,
                     body: bodyText

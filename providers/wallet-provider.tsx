@@ -17,7 +17,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     // Use Devnet exclusively as requested
     const endpoint = useMemo(() => clusterApiUrl('devnet'), []);
 
-    // Configure supported wallets (Phantom, Solflare, Backpack is natively supported by standard)
+    // Configure supported wallets (Phantom, Solflare, Backpack is supported by standard)
     const wallets = useMemo(
         () => [
             new PhantomWalletAdapter(),

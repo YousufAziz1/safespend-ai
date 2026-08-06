@@ -1,6 +1,6 @@
 /**
  * Module 19 - Configuration Layer
- * Centralizes environmental bounds orchestrating structural safety seamlessly.
+ * Centralizes environmental bounds orchestrating structural safety.
  */
 
 const getEnvBool = (value: string | undefined, defaultValue: boolean): boolean => {

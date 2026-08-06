@@ -18,7 +18,7 @@ export default function DocsPage() {
             </div>
 
             <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-                SafeSpend AI is a deterministic security interceptor orchestrating multiple layers of intelligence against the Solana blockchain.
+                SafeSpend AI is a security interceptor orchestrating multiple layers of intelligence against the Solana blockchain.
                 Instead of executing unknown transactions directly via the wallet context, SafeSpend acts as an active gateway firewall, statically and dynamically analyzing payloads across premium intelligence algorithms before wallet signature invocation.
             </p>
 
@@ -29,7 +29,7 @@ export default function DocsPage() {
                         Single Orchestration Layer
                     </h2>
                     <p className="mt-4 text-muted-foreground leading-relaxed">
-                        The core architectural principle of the platform is absolute isolation. Client-side React components never execute direct commands mapped against critical Web3 providers. Information securely flows structurally through our centralized <code>lib/security/security-engine.ts</code>. This prevents state contamination and enables completely deterministic AI explanations.
+                        The core architectural principle of the platform is absolute isolation. Client-side React components never execute direct commands mapped against critical Web3 providers. Information securely flows through our centralized <code>lib/security/security-engine.ts</code>. This prevents state contamination and enables completely AI explanations.
                     </p>
                 </section>
 
@@ -41,7 +41,7 @@ export default function DocsPage() {
                     <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <div className="rounded-xl border bg-muted/20 p-6">
                             <h3 className="font-semibold text-foreground">GoPlus Security</h3>
-                            <p className="mt-2 text-sm text-muted-foreground">Checks global malicious labels including phishing interfaces, OFAC sanctions, and known mixer intersections natively.</p>
+                            <p className="mt-2 text-sm text-muted-foreground">Checks global malicious labels including phishing interfaces, OFAC sanctions, and known mixer intersections.</p>
                         </div>
                         <div className="rounded-xl border bg-muted/20 p-6">
                             <h3 className="font-semibold text-foreground">Helius RPC</h3>
@@ -49,7 +49,7 @@ export default function DocsPage() {
                         </div>
                         <div className="rounded-xl border bg-muted/20 p-6">
                             <h3 className="font-semibold text-foreground">Birdeye</h3>
-                            <p className="mt-2 text-sm text-muted-foreground">Validates Token signatures mapping global liquidity depths preventing phishing tokens from hijacking real assets organically.</p>
+                            <p className="mt-2 text-sm text-muted-foreground">Validates Token signatures mapping global liquidity depths preventing phishing tokens from hijacking real assets.</p>
                         </div>
                         <div className="rounded-xl border bg-muted/20 p-6">
                             <h3 className="font-semibold text-foreground">Local Rule Engine</h3>
@@ -64,7 +64,7 @@ export default function DocsPage() {
                         AI Explainer Framework
                     </h2>
                     <p className="mt-4 text-muted-foreground leading-relaxed">
-                        Rather than presenting the underlying risk evaluation heuristics organically, SafeSpend intercepts the JSON-formatted reason arrays translating them structurally into natural human descriptions. Users explicitly understand exactly why their Solana network connection gets blocked natively cleanly.
+                        Rather than presenting the underlying risk evaluation heuristics, SafeSpend intercepts the JSON-formatted reason arrays translating them into natural human descriptions. Users explicitly understand exactly why their Solana network connection gets blocked cleanly.
                     </p>
                 </section>
 
@@ -74,7 +74,7 @@ export default function DocsPage() {
                         Get Started
                     </h2>
                     <p className="mt-4 text-muted-foreground leading-relaxed">
-                        Jump straight into the actual deployment and experience the active Live Hooks blocking simulations seamlessly!
+                        Jump straight into the actual deployment and experience the active Live Hooks blocking simulations!
                     </p>
                     <div className="mt-6">
                         <Link

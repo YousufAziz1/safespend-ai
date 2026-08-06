@@ -1,8 +1,4 @@
-// Overcoming Cargo cdylib/rlib linkage blockages smoothly by mapping the module directly!
-#[path = "../src/lib.rs"]
-pub mod plugin;
-
-use plugin::test_execute;
+use zeroclaw_plugin::test_execute;
 use serde_json::json;
 
 struct TestCase<'a> {
@@ -14,7 +10,7 @@ struct TestCase<'a> {
 
 #[test]
 fn execute_policy_matrix_transparently() {
-    println!("--- SAFE_SPEND AI PLUGIN: DETERMINISTIC POLICY EVALUATION MATRIX ---");
+    println!("--- SAFE_SPEND AI PLUGIN: POLICY EVALUATION MATRIX ---");
 
     let cases = vec![
         TestCase {

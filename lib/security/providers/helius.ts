@@ -2,7 +2,7 @@
 
 /**
  * Helius Security Adapter
- * Module 12 - Comprehensive wallet behavioral analytics using the Helius RPC suite natively.
+ * Module 12 - Comprehensive wallet behavioral analytics using the Helius RPC suite.
  */
 import { logger } from '@/lib/logger';
 
@@ -146,7 +146,7 @@ export const analyzeWallet = async (address: string, retries = 3): Promise<Heliu
             if (!response.ok) {
                 const bodyText = await response.text().catch(() => 'Unable to read response body');
 
-                logger.error(`[Helius Adapter] HTTP Failure executing analysis natively`, {
+                logger.error(`[Helius Adapter] HTTP Failure executing analysis`, {
                     url: safeEndpoint,
                     status: response.status,
                     body: bodyText

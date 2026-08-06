@@ -39,7 +39,7 @@ export interface SecurityAnalysis {
 }
 
 /**
- * Validates external API cycles monitoring runtime executions mapping latencies organically.
+ * Validates external API cycles monitoring runtime executions mapping latencies.
  * Allows pure non-throwing structures to explicitly expose their inner states cleanly to the downstream layers.
  */
 async function executeWithMetrics<T>(
@@ -180,7 +180,7 @@ export const analyzeTransaction = async (
 
     if (!birdeyeData.verified) {
         riskScore += 20;
-        reasons.push({ id: 'r_unver', type: 'warning', message: 'Token lacks verification standing natively.' });
+        reasons.push({ id: 'r_unver', type: 'warning', message: 'Token lacks verification standing.' });
     }
 
     // Checking if transaction history is missing locally

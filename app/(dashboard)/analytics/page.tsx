@@ -279,7 +279,7 @@ export default function AnalyticsPage() {
                     <div className="flex flex-col gap-1 rounded-lg bg-background p-4 shadow-sm">
                         <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Most Common Risk Profile</span>
                         <span className="text-sm font-medium">
-                            {safePercentage >= 50 ? `${safePercentage.toFixed(1)}% of your transactions are completely Safe.` : `High density of risk factors detected natively.`}
+                            {safePercentage >= 50 ? `${safePercentage.toFixed(1)}% of your transactions are completely Safe.` : `High density of risk factors detected.`}
                         </span>
                     </div>
                     <div className="flex flex-col gap-1 rounded-lg bg-background p-4 shadow-sm">

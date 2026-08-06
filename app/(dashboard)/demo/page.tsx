@@ -146,7 +146,7 @@ export default function DemoPage() {
                             </div>
                             <div className="space-y-2">
                                 <h3 className="text-2xl font-bold">Awaiting Scenario</h3>
-                                <p className="text-muted-foreground text-sm">Select one of the 5 Judge Demo permutations on the left to witness real decentralized logic execution seamlessly integrated into UI workflows.</p>
+                                <p className="text-muted-foreground text-sm">Select one of the 5 Judge Demo permutations on the left to witness real decentralized logic execution integrated into UI workflows.</p>
                             </div>
                         </motion.div>
                     </div>

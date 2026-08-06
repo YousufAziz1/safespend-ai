@@ -100,7 +100,7 @@ const analyzeRiskTransaction = (recipient: string = '', amount: number = 0): Moc
 };
 
 /**
- * Pure Deterministic AI Risk Engine exported directly matching old schemas tightly.
+ * Pure AI Risk Engine exported directly matching old schemas tightly.
  * By constructing explicit getters bridging array properties, we substitute dynamic logic safely.
  */
 const engine = analyzeRiskTransaction as unknown as ArrayPolyfill;
@@ -110,7 +110,7 @@ engine.slice = (start?: number, end?: number) => {
     return [engine(), engine(), engine(), engine(), engine()].slice(start, end);
 };
 
-// Polyfill dynamic index getters natively 
+// Polyfill dynamic index getters 
 for (let i = 0; i < 5; i++) {
     Object.defineProperty(engine, i, {
         get: () => engine()

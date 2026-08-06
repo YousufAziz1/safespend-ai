@@ -102,7 +102,7 @@ export default function SendPaymentPage() {
         try {
             const result = await analyzeTransaction(details.recipient, details.amount);
 
-            // Map real analytics directly rendering states recursively exactly as analyzed natively by Node Execution layer
+            // Map real analytics directly rendering states recursively exactly as analyzed by Node Execution layer
             setProviderHealth(
                 result.providerStatus.map(p => ({
                     name: p.name,
@@ -234,7 +234,7 @@ export default function SendPaymentPage() {
                             </div>
                             <h3 className="mt-4 text-sm font-semibold tracking-tight text-muted-foreground">Awaiting Input</h3>
                             <p className="mt-1.5 max-w-[260px] text-xs leading-relaxed text-muted-foreground/80">
-                                Fill out the transaction details and click execute to trigger the AI security engine analysis natively.
+                                Fill out the transaction details and click execute to trigger the AI security engine analysis.
                             </p>
                         </Card>
                     ) : isAnalyzing ? (
@@ -251,7 +251,7 @@ export default function SendPaymentPage() {
                         <>
                             {analysis && <RiskAnalysisCard analysis={analysis} />}
 
-                            {/* Module 17: Extracted Provider State Block Rendering UI explicitly seamlessly integrated smoothly */}
+                            {/* Module 17: Extracted Provider State Block Rendering UI explicitly integrated smoothly */}
                             {providerHealth && (
                                 <div className="grid grid-cols-2 gap-3 mt-1 animate-in fade-in slide-in-from-bottom-2 duration-300">
                                     {providerHealth.map((provider) => (
@@ -405,7 +405,7 @@ export default function SendPaymentPage() {
                             </div>
                             <div>
                                 <h2 className="text-xl font-bold tracking-tight">Transaction Simulation</h2>
-                                <p className="text-xs text-muted-foreground mt-0.5">Please review the final AI verdicts before signing the execution natively.</p>
+                                <p className="text-xs text-muted-foreground mt-0.5">Please review the final AI verdicts before signing the execution.</p>
                             </div>
                         </div>
 

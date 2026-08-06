@@ -1,13 +1,13 @@
 # SafeSpend AI - ZeroClaw Integration 🦞
 
-This directory hosts the primary mechanism of the SafeSpend ecosystem: a completely autonomous, Rust-based ZeroClaw plugin implementation defining local deterministic security evaluations.
+This directory hosts the primary mechanism of the SafeSpend ecosystem: a completely autonomous, Rust-based ZeroClaw plugin implementation defining local security evaluations.
 
 Because the ZeroClaw platform enforces strict portability and high-efficiency constraints via the WebAssembly (WASM) Component Model, SafeSpend AI's logic implements Native Pre-Execution rules locally without extracting dependencies onto untrusted nodes.
 
 ## 🛠️ Security Model (T0)
 
 - **Absolute Zero Custody:** This plugin never handles, stores, or processes wallet private keys or arbitrary signature blocks! 
-- **Pre-execution Boundary:** Acts solely as a deterministic gate checking boundaries before allowing the user to sign.
+- **Pre-execution Boundary:** Acts solely as a gate checking boundaries before allowing the user to sign.
 
 ### 🦞 Validations vs Unsupported Execution Domains
 
@@ -39,7 +39,7 @@ Because the ZeroClaw platform enforces strict portability and high-efficiency co
    cargo component build --release --target wasm32-wasip2
    ```
 
-3. Execute deterministic testing environments.
+3. Execute testing environments.
    ```bash
    cargo test
    ```

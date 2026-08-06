@@ -1,6 +1,6 @@
 # SafeSpend AI Architecture 🏗️
 
-This document outlines the strict deterministic workflows mapping intent pipelines through complex multi-provider security engines reliably.
+This document outlines the strict workflows mapping intent pipelines through complex multi-provider security engines reliably.
 
 ## 1. Top-Level Ecosystem Architecture
 ```mermaid

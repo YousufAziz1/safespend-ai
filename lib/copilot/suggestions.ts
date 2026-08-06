@@ -6,7 +6,7 @@ import { type PaymentPolicy } from './policies';
 export interface Suggestion {
     id: string;
     label: string;
-    actionPayload: string; // The explicit string matched by the intent parser organically when clicked
+    actionPayload: string; // The explicit string matched by the intent parser when clicked
     type: 'policy' | 'contact' | 'security' | 'action';
 }
 
@@ -97,5 +97,5 @@ export function generateSuggestions(ctx: SuggestionContext): Suggestion[] {
         });
     }
 
-    return suggestions.slice(0, 4); // Show max 4 suggestions seamlessly
+    return suggestions.slice(0, 4); // Show max 4 suggestions
 }

@@ -1,6 +1,6 @@
 /**
  * Module 21 — Central Logger
- * Native logging singleton abstracting stdout pipelines strictly enforcing timestamps and environment restrictions natively.
+ * Native logging singleton abstracting stdout pipelines strictly enforcing timestamps and environment restrictions.
  */
 
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';

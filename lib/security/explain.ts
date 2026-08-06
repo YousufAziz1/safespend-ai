@@ -4,7 +4,7 @@ import type { SecurityAnalysis } from './security-engine';
  * ────────────────────────────────────────────────────────────────────────────
  * PROVIDER AGNOSTIC EXPLANATION INTERFACE
  * Allows swapping between dynamic LLMs effortlessly bridging the orchestration outputs
- * natively mapping explicit structured prompts.
+ * mapping explicit structured prompts.
  * ────────────────────────────────────────────────────────────────────────────
  */
 export interface ExplanationProvider {
@@ -17,7 +17,7 @@ export interface ExplanationProvider {
 
 /**
  * Default Explanation Provider
- * Returns deterministic text bypassing external API limits isolating the pipeline natively.
+ * Returns text bypassing external API limits isolating the pipeline.
  */
 export class DefaultExplanationProvider implements ExplanationProvider {
     async explain(_prompt: string, analysis: SecurityAnalysis): Promise<string> {
@@ -43,7 +43,7 @@ export class DefaultExplanationProvider implements ExplanationProvider {
             sentences.push('GoPlus did not detect blacklist activity.');
         }
 
-        // 3. Token Liquidity mapping limits natively defined
+        // 3. Token Liquidity mapping limits defined
         if (analysis.token.suspicious) {
             sentences.push('The associated token is highly suspicious.');
         } else if (analysis.token.verified) {
@@ -65,7 +65,7 @@ export class DefaultExplanationProvider implements ExplanationProvider {
     }
 }
 
-// TODO: Create `GeminiExplanationProvider` implementing Gemini API execution loops natively.
+// TODO: Create `GeminiExplanationProvider` implementing Gemini API execution loops.
 // TODO: Create `OpenRouterExplanationProvider` mapping arbitrary logic limits identically.
 // TODO: Create `OpenAIExplanationProvider` orchestrating explicit explicit reasoning safely.
 
@@ -82,7 +82,7 @@ const activeProvider: ExplanationProvider = new DefaultExplanationProvider();
 export const generateExplanation = async (analysis: SecurityAnalysis): Promise<string> => {
 
     // 1. Produce a rigidly structured prompt internally avoiding API mutation scopes
-    // Enforcing strict bounds explicitly commanding the LLM NOT to calculate any risk natively.
+    // Enforcing strict bounds explicitly commanding the LLM NOT to calculate any risk.
     const prompt = `
 You are a security analyst for SafeSpend AI. Explain the following transaction risk analysis to the user in a natural, professional tone. 
 CRITICAL RULES:

@@ -2,7 +2,7 @@
  * SafeSpend AI Copilot — Contact Memory Manager
  * Module CP-02, Part 2
  *
- * Stores contacts in localStorage for deterministic name → address resolution.
+ * Stores contacts in localStorage for name → address resolution.
  */
 
 import { PublicKey } from '@solana/web3.js';

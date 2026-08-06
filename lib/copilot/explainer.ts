@@ -54,7 +54,7 @@ export function generateProviderExplanations(
         birdeyeReasons.push('Token exhibits low liquidity or suspicious indicators.');
     } else {
         if (analysis.token.verified) {
-            birdeyeReasons.push('Healthy token behaviors detected natively.');
+            birdeyeReasons.push('Healthy token behaviors detected.');
             birdeyeReasons.push('Good market liquidity verified safely.');
         } else {
             birdeyeStatus = 'warn';
@@ -90,7 +90,7 @@ export function generateProviderExplanations(
             explanations.push({ provider: 'Simulation', status: 'fail', reasons: ['RPC simulation manually failed.', 'Transaction blocked intrinsically.'] });
         }
         if (sim && sim.status === 'completed') {
-            explanations.push({ provider: 'Simulation', status: 'pass', reasons: ['Live Web3 simulation completed organically.', 'Compute units validated.'] });
+            explanations.push({ provider: 'Simulation', status: 'pass', reasons: ['Live Web3 simulation completed.', 'Compute units validated.'] });
         }
     }
 

@@ -1,5 +1,5 @@
 /**
- * SafeSpend AI Copilot — Deterministic Intent Parser
+ * SafeSpend AI Copilot — Intent Parser
  * Module CP-02, Part 1
  *
  * Extracts structured intent from natural language without any AI model.
@@ -42,7 +42,7 @@ const EXPLAIN_PATTERNS = [
 ];
 
 /**
- * Deterministically parse a natural language message into a structured intent.
+ * Parse a natural language message into a structured intent.
  */
 export function parseIntent(raw: string): ParsedIntent {
     const trimmed = raw.trim();

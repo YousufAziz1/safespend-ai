@@ -1,6 +1,6 @@
 # SafeSpend AI - Threat Model & Security Philosophy 🛡️
 
-The SafeSpend plugin applies deterministic rules evaluating Web3 interaction states. Since the component complies strictly with the ZeroClaw WebAssembly Component Model, it adheres to capability-based security. 
+The SafeSpend plugin applies rules evaluating Web3 interaction states. Since the component complies strictly with the ZeroClaw WebAssembly Component Model, it adheres to capability-based security. 
 
 ## Custody Tier: T0
 - **No Keystores:** The plugin never requests wallet private keys nor accesses host keychains.
@@ -15,7 +15,7 @@ This index references every explicit constraint executed inside `zeroclaw-plugin
 ### `ERR_EMPTY_RECIPIENT`
 - **Purpose:** Prevents null execution targets leading to blackholed transactions.
 - **Severity:** Critical
-- **Trigger:** `req.recipient` is missing or parses whitespace natively.
+- **Trigger:** `req.recipient` is missing or parses whitespace.
 
 ### `ERR_PAYLOAD_TOO_LARGE`
 - **Purpose:** Stops Memory-allocation panics (DOS) executing within WASM linear boundaries cleanly.
@@ -25,7 +25,7 @@ This index references every explicit constraint executed inside `zeroclaw-plugin
 ### `ERR_BASE58_DECODE_FAIL`
 - **Purpose:** Restricts malformed alphabet injections targeting the Solana signature matrix.
 - **Severity:** Critical
-- **Trigger:** Target evaluation fails `bs58::decode()` natively.
+- **Trigger:** Target evaluation fails `bs58::decode()`.
 
 ### `ERR_INVALID_PUBKEY_LENGTH`
 - **Purpose:** Ensures the payload translates accurately into a `32-byte` physical array representing canonical ed25519 addresses.
@@ -42,7 +42,7 @@ This index references every explicit constraint executed inside `zeroclaw-plugin
 - **Severity:** Critical
 
 ### `WARN_SELF_TRANSFER`
-- **Purpose:** Prevent execution overlap preventing duplicate gas costs natively.
+- **Purpose:** Prevent execution overlap preventing duplicate gas costs.
 - **Severity:** Warning
 - **Trigger:** Input `sender` matches the mapped `recipient`.
 
@@ -51,7 +51,7 @@ This index references every explicit constraint executed inside `zeroclaw-plugin
 - **Severity:** Warning
 
 ### `ERR_ZERO_AMOUNT`
-- **Purpose:** Target bounds enforcing positive functional volumes preventing arbitrary payload dusting explicitly natively.
+- **Purpose:** Target bounds enforcing positive functional volumes preventing arbitrary payload dusting explicitly.
 - **Severity:** Critical
 - **Trigger:** Total output equates `>= 0`.
 

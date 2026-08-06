@@ -1,15 +1,15 @@
-﻿<div align="center">
+<div align="center">
 
 # 🦞 SafeSpend AI — ZeroClaw Security Plugin
 
-**Deterministic WebAssembly Security boundaries for Solana Transactors**
+** WebAssembly Security boundaries for Solana Transactors**
 
 <p>
   <i>Validate. Protect. Execute.</i>
 </p>
 
 <p>
-  A lightweight, stateless Rust <code>wasm32-wasip2</code> plugin intercepting native ZeroClaw agent transactions enforcing hard deterministic rule matrices before wallet signatures are queried.
+  A lightweight, stateless Rust <code>wasm32-wasip2</code> plugin intercepting native ZeroClaw agent transactions enforcing hard rule matrices before wallet signatures are queried.
 </p>
 
 <br />![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white)![WebAssembly](https://img.shields.io/badge/WebAssembly-654FF0?style=for-the-badge&logo=webassembly&logoColor=white)![Solana](https://img.shields.io/badge/Solana-14F195?style=for-the-badge&logo=solana&logoColor=white)![ZeroClaw](https://img.shields.io/badge/ZeroClaw-Orange?style=for-the-badge)
@@ -31,7 +31,7 @@
 - **Custody Tier: T0**
 - **No Keystore Limits:** The plugin NEVER stores, touches, or requests native private keys. 
 - **Human Authority:** The agent simply evaluates and suggests; the human always signs transactions.
-- **Deterministic Pre-Execution:** Operates entirely autonomously processing structural parameters avoiding LLM hallucination overrides.
+- ** Pre-Execution:** Operates entirely autonomously processing structural parameters avoiding LLM hallucination overrides.
 
 ---
 
@@ -42,11 +42,11 @@ It guarantees **zero `solana-sdk` dependency bloat**, exporting exact `wit` bind
 
 ### Implemented Native Checks
 
-| Rule ID | Check | Severity | Deterministic Logic |
+| Rule ID | Check | Severity | Logic |
 |---|---|---|---|
 | `ERR_EMPTY_RECIPIENT` | Missing Recipient | **Critical** | Rejects `null` or whitespace-only destination targets. |
-| `ERR_PAYLOAD_TOO_LARGE` | Buffer Limit Exceeded | **Critical** | Rejects payload strings structurally exceeding 44 bytes avoiding OOM allocation natively. |
-| `ERR_INVALID_PUBKEY_LENGTH` | Address Length | **Critical** | Triggers if decoded public key structurally differs from canonical `32` byte standards. |
+| `ERR_PAYLOAD_TOO_LARGE` | Buffer Limit Exceeded | **Critical** | Rejects payload strings exceeding 44 bytes avoiding OOM allocation. |
+| `ERR_INVALID_PUBKEY_LENGTH` | Address Length | **Critical** | Triggers if decoded public key differs from canonical `32` byte standards. |
 | `WARN_SELF_TRANSFER` | Duplicate Recipient | **Warning** | Flags execution if the `sender` and `recipient` addresses correlate identically statically. |
 | `ERR_ZERO_AMOUNT` | Invalid Amount | **Critical** | Evaluates boundaries to ensure token values are expressly positive scalars securely (`> 0.0`). |
 
@@ -57,7 +57,7 @@ It guarantees **zero `solana-sdk` dependency bloat**, exporting exact `wit` bind
 ```text
 safespend-ai/
 ├── zeroclaw-plugin/      # 🦞 Primary Project: ZeroClaw Rust/WASM Security Plugin
-│   ├── src/lib.rs        # Core deterministic logic engine
+│   ├── src/lib.rs        # Core logic engine
 │   └── wit/world.wit     # Explicit ZeroClaw trait interfaces
 ├── docs/                 # Documentation (ARCHITECTURE.md, SECURITY.md)
 └── app/                  # 🌐 Optional Next.js Dashboard Visualizer 

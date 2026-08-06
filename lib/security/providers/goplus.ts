@@ -25,12 +25,12 @@ export interface GoPlusApiResponse {
 const GOPLUS_BASE_URL = 'https://api.gopluslabs.io/api/v1/address_security';
 
 /**
- * Standard utility mapping timeout logic cleanly rejecting isolated backend hangs natively!
+ * Standard utility mapping timeout logic cleanly rejecting isolated backend hangs!
  */
 const fetchWithTimeout = async (resource: string, options: RequestInit & { timeout?: number }) => {
     const { timeout = 8000 } = options;
 
-    // Explicit signal boundaries natively closing fetching loops
+    // Explicit signal boundaries closing fetching loops
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeout);
 
@@ -51,11 +51,11 @@ const fetchWithTimeout = async (resource: string, options: RequestInit & { timeo
  * Dynamically resolves JSON map schemas explicitly checking explicit risk bounds conforming strictly to GoPlus spec payloads
  */
 const parseGoPlusResponse = (address: string, response: GoPlusApiResponse): GoPlusWalletAnalysis => {
-    // GoPlus conventionally returns queried addresses inherently lowercased natively
+    // GoPlus conventionally returns queried addresses inherently lowercased
     const result = response.result?.[address.toLowerCase()];
 
     if (!result) {
-        // Safe standard fallback dynamically allowing the stream resolving natively
+        // Safe standard fallback dynamically allowing the stream resolving
         return {
             malicious: false,
             suspicious: false,
@@ -71,7 +71,7 @@ const parseGoPlusResponse = (address: string, response: GoPlusApiResponse): GoPl
     let malicious = false;
     let suspicious = false;
 
-    // Evaluate standard GoPlus records mapping against JSON execution layers dynamically mapped natively
+    // Evaluate standard GoPlus records mapping against JSON execution layers dynamically mapped
     if (result['cybercrime'] === '1') {
         malicious = true; labels.push('Cybercrime'); riskScore += 80;
     }
@@ -111,12 +111,12 @@ const parseGoPlusResponse = (address: string, response: GoPlusApiResponse): GoPl
 };
 
 /**
- * Checks a specific address securely tracking global risk variables natively mapped to GoPlus records
+ * Checks a specific address securely tracking global risk variables mapped to GoPlus records
  */
 export const checkWallet = async (address: string, retries = 3): Promise<GoPlusWalletAnalysis> => {
     let attempt = 0;
 
-    // TODO: Define Solana chain_id specifically for GoPlus architecture natively mapping accurately. Defaulting Ethereum '1' as a stub if Solana (solana/101) throws.
+    // TODO: Define Solana chain_id specifically for GoPlus architecture mapping accurately. Defaulting Ethereum '1' as a stub if Solana (solana/101) throws.
     const chainId = '1';
     const endpoint = `${GOPLUS_BASE_URL}/${address}?chain_id=${chainId}`;
 
@@ -145,10 +145,10 @@ export const checkWallet = async (address: string, retries = 3): Promise<GoPlusW
         } catch (error) {
             attempt++;
             if (attempt >= retries) {
-                console.error(`[GoPlus Adapter] Threshold reached rejecting ${address} natively after ${retries} attempts.`);
+                console.error(`[GoPlus Adapter] Threshold reached rejecting ${address} after ${retries} attempts.`);
                 throw new Error(`Failed to verify wallet execution locally across GoPlus. ${error instanceof Error ? error.message : 'Unknown Runtime Error.'}`);
             }
-            // Standard backoff wait layer backing execution limits natively 
+            // Standard backoff wait layer backing execution limits 
             await new Promise(resolve => setTimeout(resolve, 1500 * attempt));
         }
     }

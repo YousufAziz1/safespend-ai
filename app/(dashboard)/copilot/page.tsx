@@ -700,7 +700,7 @@ export function CopilotInterface({
     useEffect(() => { stepRef.current = onStepProgress; }, [onStepProgress]);
 
 
-    // Standard hooks mapping strictly to SafeSpend runtime bounds natively decoupling ui state limits
+    // Standard hooks mapping strictly to SafeSpend runtime bounds decoupling ui state limits
     const { sendTransaction, simulatePayment, signature: activeSignature, error: hookError } = useSendTransaction();
 
     const scrollToBottom = useCallback(() => {
@@ -779,7 +779,7 @@ export function CopilotInterface({
             const p1 = updatePlanStep(plan, 'simulate', 'running');
             updateAssistant(msgId, { isExecuting: true, executionPlan: p1 });
 
-            // Run natively via RPC
+            // Run via RPC
             const res = await simulatePayment(address, intent.amount!);
             if (!res.success) {
                 const f1 = updatePlanStep(p1, 'simulate', 'failed');
@@ -792,7 +792,7 @@ export function CopilotInterface({
                 return;
             }
 
-            // Wallet Signing phase natively maps Phantom async bounds
+            // Wallet Signing phase maps Phantom async bounds
             const p2 = updatePlanStep(p1, 'simulate', 'completed');
             const p3 = updatePlanStep(p2, 'wallet', 'running');
             updateAssistant(msgId, { executionTimelineFinished: true, isSigning: true, executionPlan: p3 });
@@ -815,7 +815,7 @@ export function CopilotInterface({
             const c2 = updatePlanStep(c1, 'confirm', 'running');
             updateAssistant(msgId, { isSigning: false, isConfirmed: true, executionPlan: c2, finalSignature: signature });
 
-            // Auto-complete confirmation/history logic seamlessly bounding sync UX
+            // Auto-complete confirmation/history logic bounding sync UX
             setTimeout(() => {
                 const f1 = updatePlanStep(c2, 'confirm', 'completed');
                 const f2 = updatePlanStep(f1, 'history', 'completed');
@@ -1008,7 +1008,7 @@ export function CopilotInterface({
             case 'explain': {
                 const last = messagesRef.current.slice().reverse().find(m => m.analysis);
                 if (last && last.analysis) {
-                    addAssistant('Here is a detailed breakdown of how I evaluated this transaction natively step-by-step.', {
+                    addAssistant('Here is a detailed breakdown of how I evaluated this transaction step-by-step.', {
                         isExplanationMode: true,
                         analysis: last.analysis,
                         executionPlan: last.executionPlan,
