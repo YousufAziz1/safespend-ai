@@ -1,0 +1,9 @@
+   Compiling zeroclaw-plugin v0.1.0 (C:\Users\USER\OneDrive\Desktop\new agent\safespend-ai\zeroclaw-plugin)
+error[E0432]: unresolved import `plugin::test_execute`
+ --> tests\policy_cases.rs:5:5
+  |
+5 | use plugin::test_execute;
+  |     ^^^^^^^^^^^^^^^^^^^^ no `test_execute` in `plugin`
+
+For more information about this error, try `rustc --explain E0432`.
+error: could not compile `zeroclaw-plugin` (test "policy_cases") due to 1 previous error

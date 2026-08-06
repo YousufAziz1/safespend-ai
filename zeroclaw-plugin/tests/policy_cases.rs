@@ -1,5 +1,8 @@
-use zeroclaw_plugin::SafeSpendPlugin;
-use zeroclaw_plugin::exports::zeroclaw::plugin::tool::Guest;
+// Overcoming Cargo cdylib/rlib linkage blockages smoothly by mapping the module directly!
+#[path = "../src/lib.rs"]
+pub mod plugin;
+
+use plugin::test_execute;
 use serde_json::json;
 
 struct TestCase<'a> {
@@ -111,9 +114,7 @@ fn execute_policy_matrix_transparently() {
         println!("\n[{}] TEST CASE: {}", i + 1, case.name);
         println!("Input state bounds: {}", case.args.to_string());
         
-        let res = SafeSpendPlugin::execute(case.args.to_string()).expect("Plugin panicked");
-        
-        let output = res.output;
+        let output = test_execute(case.args.to_string());
         
         let found_code = output.contains(case.expect_code);
         let found_verdict = output.contains(&format!("\"verdict\": \"{}\"", case.expect_verdict)) || output.contains(&format!("\"Verdict\": \"{}\"", case.expect_verdict));

@@ -461,8 +461,12 @@ impl exports::zeroclaw::plugin::plugin_info::Guest for SafeSpendPlugin {
     fn version() -> String { "0.2.0".to_string() }
     fn author() -> String { "SafeSpend AI".to_string() }
 }
-
 export!(SafeSpendPlugin);
+
+pub fn test_execute(args: String) -> String {
+    let res = <SafeSpendPlugin as exports::zeroclaw::plugin::tool::Guest>::execute(args).unwrap();
+    res.output
+}
 
 #[cfg(test)]
 mod tests {

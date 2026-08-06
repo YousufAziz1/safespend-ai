@@ -1,9 +1,73 @@
 ===================================================
  SafeSpend AI - Verifiable Deterministic Evidence  
 ===================================================
-Timestamp: 2026-08-06T17:14:02Z
-Commit_SHA: 1fc3086599a16e9ef8fc7917c6c79ca5d19b805a
+Timestamp: 2026-08-06T17:25:39Z
+Commit_SHA: 642876ac36a596f9b7e4ce5015360aad9fd99242
 Runtime: wasm32-wasi Native Bound Evaluations
 ---------------------------------------------------
 
-scripts/generate-evidence.sh: line 18: cargo: command not found
+   Compiling zeroclaw-plugin v0.1.0 (C:\Users\USER\OneDrive\Desktop\new agent\safespend-ai\zeroclaw-plugin)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.12s
+     Running tests\policy_cases.rs (target\debug\deps\policy_cases-ca9d424e2b307877.exe)
+
+running 9 tests
+--- SAFE_SPEND AI PLUGIN: DETERMINISTIC POLICY EVALUATION MATRIX ---
+
+[1] TEST CASE: Valid Transfer (Known Recipient, Healthy Velocity, Normal Amount)
+Input state bounds: {"amount":10.0,"recipient":"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s","reputation":{"allow_list":["metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"]}}
+✅ PASS => Correctly mapping struct { Verdict: Allow, Code: OK }
+
+[2] TEST CASE: Malformed Base58 (Invalid Alphabet / Drainer Obfuscation)
+Input state bounds: {"recipient":"4q7177B43973xX8j1tW32h5J2mG817E2IO"}
+✅ PASS => Correctly mapping struct { Verdict: Deny, Code: ERR_BASE58_DECODE_FAIL }
+
+[3] TEST CASE: Invalid Canonical Length (Wrong Pubkey Derivation)
+test plugin::tests::test_policy_daily_limit_warn ... Input state bounds: {"recipient":"2s122d"}
+ok
+test plugin::tests::test_invalid_alphabet_base58 ... ok
+test plugin::tests::test_valid_address_known ... ok
+test plugin::tests::test_reputation_deny ... ok
+test plugin::tests::test_policy_tx_limit_exceeded ... ok
+test plugin::tests::test_system_program ... ok
+test plugin::tests::test_require_approval_unknown ... ok
+✅ PASS => Correctly mapping struct { Verdict: Deny, Code: ERR_INVALID_PUBKEY_LENGTH }
+
+[4] TEST CASE: Zero Amount Request (Dusting / Sub-Zero bounds)
+test plugin::tests::test_velocity_limit_warn ... Input state bounds: {"amount":0.0,"recipient":"DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"}
+ok
+✅ PASS => Correctly mapping struct { Verdict: Deny, Code: ERR_ZERO_AMOUNT }
+
+[5] TEST CASE: Self-Transfer Loop (Gas Waste Protection)
+Input state bounds: {"amount":1.0,"recipient":"DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263","sender":"DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"}
+✅ PASS => Correctly mapping struct { Verdict: RequireApproval, Code: WARN_SELF_TRANSFER }
+
+[6] TEST CASE: Per-Transaction Limit Exceeded (Spending Bound)
+Input state bounds: {"amount":5000.0,"policy":{"max_per_tx_amount":1000.0},"recipient":"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"}
+✅ PASS => Correctly mapping struct { Verdict: Deny, Code: ERR_TX_LIMIT_EXCEEDED }
+
+[7] TEST CASE: Daily Cumulative Limit Reached
+Input state bounds: {"amount":50.0,"daily_spend_so_far":980.0,"policy":{"max_daily_amount":1000.0},"recipient":"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"}
+✅ PASS => Correctly mapping struct { Verdict: RequireApproval, Code: WARN_DAILY_LIMIT_EXCEEDED }
+
+[8] TEST CASE: Velocity Transfer Limit Breached (Spam Filter)
+Input state bounds: {"amount":5.0,"policy":{"max_velocity_transfers":20},"recent_transfer_count":25,"recipient":"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"}
+✅ PASS => Correctly mapping struct { Verdict: RequireApproval, Code: WARN_VELOCITY_EXCEEDED }
+
+[9] TEST CASE: Deny-Listed Drainer Account Intercepted
+Input state bounds: {"amount":1.0,"recipient":"DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263","reputation":{"deny_list":["DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"]}}
+✅ PASS => Correctly mapping struct { Verdict: Deny, Code: ERR_REPUTATION_DENY }
+
+[10] TEST CASE: Unknown Recipient Escalation (Escort to Human Signature)
+Input state bounds: {"amount":1.0,"recipient":"DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263","reputation":{"allow_list":["metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"]}}
+✅ PASS => Correctly mapping struct { Verdict: RequireApproval, Code: REQUIRE_APPROVAL_UNKNOWN }
+
+---------------------------------------------------
+MATRIX STATUS: 10/10 tests passed identically.
+---------------------------------------------------
+test execute_policy_matrix_transparently ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+===================================================
+ END OF MACHINE VALIDATION 

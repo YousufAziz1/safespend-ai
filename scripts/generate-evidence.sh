@@ -15,7 +15,7 @@ echo "" >> "$EVIDENCE_FILE"
 
 # Run tests and capture stdout mapping the specific table-driven tests
 cd zeroclaw-plugin
-cargo test --test policy_cases -- --nocapture >> "../$EVIDENCE_FILE" 2>&1
+cargo.exe test --test policy_cases -- --nocapture >> "../$EVIDENCE_FILE" 2>&1
 
 echo "" >> "../$EVIDENCE_FILE"
 echo "===================================================" >> "../$EVIDENCE_FILE"

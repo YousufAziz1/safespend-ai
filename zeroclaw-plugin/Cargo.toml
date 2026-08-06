@@ -4,7 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [lib]
-crate-type = ["cdylib"]
+name = "zeroclaw_plugin"
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 wit-bindgen = "0.36.0"
