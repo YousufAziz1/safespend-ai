@@ -12,7 +12,7 @@ const sidebarItems = [
     { title: 'Transactions', href: '/transactions', icon: ArrowLeftRight },
     { title: 'Analytics', href: '/analytics', icon: Activity },
     { title: 'Settings', href: '/settings', icon: Settings },
-    { title: 'Demo Mode', href: '/demo', icon: Bot },
+    { title: 'Scenarios', href: '/demo', icon: Bot },
 ];
 
 export function Sidebar() {

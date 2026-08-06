@@ -45,7 +45,7 @@ export async function buildTransferTransaction(
         const { blockhash } = await connection.getLatestBlockhash('confirmed');
         transaction.recentBlockhash = blockhash;
 
-        // 5. Expose purely unsigned output structure
+        // 5. Expose unsigned output structure
         return transaction;
     } catch (error) {
         console.error('[SafeSpend] Critical error building transaction payload:', error);

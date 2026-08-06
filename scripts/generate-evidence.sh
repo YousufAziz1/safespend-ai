@@ -1,4 +1,12 @@
 #!/bin/bash
+if [ -f "$HOME/.cargo/env" ]; then
+    # shellcheck source=/dev/null
+    source "$HOME/.cargo/env"
+fi
+
+if command -v rustup &> /dev/null; then
+    rustup target add wasm32-wasip2
+fi
 mkdir -p evidence
 
 EVIDENCE_FILE="evidence/test-output.txt"

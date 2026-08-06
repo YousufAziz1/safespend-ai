@@ -10,8 +10,7 @@ import { cn } from '@/lib/utils';
 import { TransactionForm } from '@/components/transaction/transaction-form';
 import { RiskAnalysisCard } from '@/components/transaction/risk-analysis-card';
 import { ApprovalFooter } from '@/components/transaction/approval-footer';
-import type { MockRiskScenario } from '@/lib/mock-risk';
-import type { TransactionDetails } from '@/types/transaction';
+import type { TransactionDetails, ReasonType } from '@/types/transaction';
 import { useSendTransaction } from '@/hooks/use-send-transaction';
 import { getTransactions, type TransactionRecord } from '@/lib/storage/transaction-history';
 
@@ -23,6 +22,18 @@ interface ProviderStatus {
     status: 'online' | 'offline' | 'timeout';
     latency: number;
     confidence: number;
+}
+
+interface SecurityResult {
+    scenarioId: string;
+    scenarioName: string;
+    score: number;
+    color: 'green' | 'yellow' | 'red';
+    status: 'safe' | 'warning' | 'danger';
+    recommendation: 'approve' | 'manual_review' | 'reject';
+    confidence: number;
+    estimatedFee: number;
+    reasons: { id: string; type: ReasonType; message: string }[];
 }
 
 function AIExplanationCard({ text }: { text: string }) {
@@ -70,7 +81,7 @@ function AIExplanationCard({ text }: { text: string }) {
 
 export default function SendPaymentPage() {
     const [transaction, setTransaction] = useState<TransactionDetails | null>(null);
-    const [analysis, setAnalysis] = useState<MockRiskScenario | null>(null);
+    const [analysis, setAnalysis] = useState<SecurityResult | null>(null);
     const [explanation, setExplanation] = useState<string | null>(null);
     const [providerHealth, setProviderHealth] = useState<ProviderStatus[] | null>(null);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -112,7 +123,7 @@ export default function SendPaymentPage() {
                 }))
             );
 
-            const mappedAnalysis: MockRiskScenario = {
+            const mappedAnalysis: SecurityResult = {
                 scenarioId: `eval_${Date.now()}`,
                 scenarioName: 'Live Security Analysis',
                 score: result.riskScore,
@@ -137,7 +148,7 @@ export default function SendPaymentPage() {
                 { name: 'Local Rule Engine', status: 'online', latency: 2, confidence: 100 },
             ]);
 
-            const fallbackAnalysis: MockRiskScenario = {
+            const fallbackAnalysis: SecurityResult = {
                 scenarioId: `fallback_${Date.now()}`,
                 scenarioName: 'Local Baseline Fallback',
                 score: 0,

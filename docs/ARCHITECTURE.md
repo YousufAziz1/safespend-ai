@@ -1,77 +1,49 @@
 # SafeSpend AI Architecture 🏗️
 
-This document outlines the strict workflows mapping intent pipelines through complex multi-provider security engines reliably.
+This document outlines the strict execution pathways mapping intent payloads across the policy engine and webhook channels accurately.
 
-## 1. Top-Level Ecosystem Architecture
+## 1. ZeroClaw Target Interaction System
+
 ```mermaid
 graph TD
-    User([End User]) --> |Web Interface| Copilot(AI Copilot UI)
-    User --> |Direct Send| Composer(Native Composer)
+    User([End User / Operator]) --> |POST Request| Webhook(Webhook Channel Ingress: Port 42617)
     
-    Copilot --> Intent[Intent Parser]
-    Intent --> Memory[Contact Memory resolving base58]
-    Memory --> Policy[Policy Engine Validations]
+    Webhook --> SOP[Agent SOP Engine]
     
-    Composer --> Policy
+    SOP --> Intent[Action: Parse Intent]
+    Intent --> Plugin[Action: Call Policy Plugin]
     
-    Policy --> SecEngine[Security Orchestrator]
+    Plugin --> WASM[(wasm32-wasip2 Sandbox)]
     
-    SecEngine --> |RPC Check| Helius[Helius Engine]
-    SecEngine --> |REST Check| GoPlus[GoPlus Blacklists]
-    SecEngine --> |GraphQL| Birdeye[Birdeye Token API]
+    WASM --> CheckValidation[Input Validation]
+    CheckValidation --> CheckPolicy[Policy Enforcement Constraints]
+    CheckPolicy --> VerdictReturn[Returns: Allow, RequireApproval, or Deny]
     
-    Helius --> SecAggregator(Risk Aggregator)
-    GoPlus --> SecAggregator
-    Birdeye --> SecAggregator
+    VerdictReturn --> Switch[SOP Switch Case]
     
-    SecAggregator --> |Threat Found| Explainer[Explainability Engine]
-    Explainer --> Copilot
+    Switch --> |Deny| Halt[Stop Execution - Reply Denied]
+    Switch --> |RequireApproval| Checkpoint[Checkpoint: Human Review]
     
-    SecAggregator --> |Approved| Simulator[Web3 Simulator]
+    Checkpoint --> |Approved| Executor[Solana Web3 Call]
+    Switch --> |Allow| Executor
     
-    Simulator --> |Success| Phantom[Wallet Signature]
-    Simulator --> |Fail| Explainer
-    
-    Phantom --> Ledger[(Local Ledger)]
-    Ledger --> Analytics[Analytics Dashboard]
+    Executor --> |Transaction Built| Devnet[Solana Devnet Submission]
+    Devnet --> Finish[Reply with Explorer Link]
 ```
 
-## 2. Complete Transaction Lifecycle (System Flow)
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant CP as Copilot
-    participant Engine as Security Engine
-    participant API as External Providers (Helius/GoPlus)
-    participant Sim as Web3 Sandbox
-    participant Wallet as Phantom/Solana
-    
-    U->>CP: "Send 2 SOL to John"
-    CP-->>CP: Parse Intent [Amount: 2, Token: SOL, Name: John]
-    CP-->>CP: Resolve Alias to Address
-    CP-->>CP: Check Payment Policy/Limits
-    
-    alt Policy Violated
-        CP->>U: Block Execution (Limits Exceeded)
-    else Policy Valid
-        CP->>Engine: triggerSecurityAnalysis()
-        Engine->>API: Aggregate Provider Data Globally
-        API-->>Engine: Return Health Payloads
-        Engine-->>CP: Return `SecurityAnalysis` struct
-        
-        alt Threat Found (Reject)
-            CP->>U: Auto-block & Display Transparent Reasoning
-        else Safe (Approve)
-            CP->>Sim: simulateTransaction()
-            Sim-->>CP: Instruction Result
-            
-            alt Compute Failed
-                CP->>U: Block Execution (Revert Detected)
-            else Success
-                CP->>Wallet: Request Signature
-                Wallet-->>CP: txSignature
-                CP->>U: Transaction Complete
-            end
-        end
-    end
-```
+## 2. Capability Claims
+
+The workflow maps capabilities strictly utilizing offline deterministic functions avoiding live network bloat.
+
+| Claim | Component File | Execution Target |
+|---|---|---|
+| **JSON Argument Parsing** | `zeroclaw-plugin/src/lib.rs` | Standard `serde_json` mapping parameters |
+| **Stateless Threat Verification** | `zeroclaw-plugin/src/lib.rs` | Local execution returning structured Enum codes |
+| **Webhook Ingress Channel** | `zeroclaw/agent.yml` | Maps external UI commands triggering pipeline |
+| **Policy State Orchestration** | `zeroclaw/sop.yml` | Governs the flow of approvals handling conditional branches |
+
+## 3. Explicit File Boundaries
+
+1. **`zeroclaw-plugin`**: Entirely sandboxed Rust logic enforcing static tests defining rule limits locally.
+2. **`zeroclaw/sop.yml`**: The instruction controller defining state interactions governing exactly when human input intercepts an instruction securely preventing automated key exposure.
+3. **`docs/SECURITY.md`**: Provides exact documentation differentiating input formatting constraints from absolute policy bounds.

@@ -7,7 +7,6 @@ import { WalletInfo } from '@/components/wallet/wallet-info';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { mockRiskScenarios } from '@/lib/mock-risk';
 import { getTransactions, type TransactionRecord } from '@/lib/storage/transaction-history';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
@@ -28,8 +27,7 @@ export default function DashboardPage() {
         }
     }, []);
 
-    const recentActivity = mockRiskScenarios.slice(0, 3);
-    const displayMocks = history.length === 0 && !isLoading;
+    const hasHistory = history.length > 0;
 
     return (
         <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
@@ -137,27 +135,10 @@ export default function DashboardPage() {
                                 <div className="flex items-center justify-center rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
                                     Loading history...
                                 </div>
-                            ) : displayMocks ? (
-                                recentActivity.map(activity => (
-                                    <Card key={activity.scenarioId} className="shadow-sm transition-colors hover:bg-muted/10">
-                                        <CardContent className="flex items-center justify-between gap-4 p-4">
-                                            <div className="flex flex-col gap-1 overflow-hidden">
-                                                <span className="truncate font-semibold">{activity.scenarioName}</span>
-                                                <span className="text-xs text-muted-foreground">{activity.estimatedFee.toFixed(6)} SOL fee</span>
-                                            </div>
-                                            <Badge
-                                                variant={activity.color === 'green' ? 'default' : activity.color === 'yellow' ? 'secondary' : 'destructive'}
-                                                className={cn(
-                                                    "shrink-0",
-                                                    activity.color === 'green' && "bg-emerald-500/15 text-emerald-700 hover:bg-emerald-500/25 dark:bg-emerald-500/10 dark:text-emerald-400",
-                                                    activity.color === 'yellow' && "bg-yellow-500/15 text-yellow-700 hover:bg-yellow-500/25 dark:bg-yellow-500/10 dark:text-yellow-500",
-                                                )}
-                                            >
-                                                {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
-                                            </Badge>
-                                        </CardContent>
-                                    </Card>
-                                ))
+                            ) : !hasHistory ? (
+                                <div className="flex items-center justify-center rounded-xl border border-dashed p-8 text-sm text-muted-foreground">
+                                    No recent activity. Send a transfer via the Copilot to see it here.
+                                </div>
                             ) : (
                                 history.map((tx) => {
                                     const isGreen = tx.riskLevel === 'safe' || tx.riskLevel === 'green';

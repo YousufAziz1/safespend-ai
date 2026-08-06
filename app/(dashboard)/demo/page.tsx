@@ -40,7 +40,7 @@ export default function DemoPage() {
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <Shield className="size-5 text-primary" />
-                        <h2 className="text-xl font-bold tracking-tight">Judge Demo Mode</h2>
+                        <h2 className="text-xl font-bold tracking-tight">Security Scenarios</h2>
                     </div>
                     <p className="text-sm text-muted-foreground">Select a scenario to witness the autonomous AI security pipeline execute locally in real-time.</p>
                 </div>

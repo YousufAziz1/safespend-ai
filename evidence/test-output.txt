@@ -1,15 +1,67 @@
 ===================================================
  SafeSpend AI - Verifiable Evidence  
 ===================================================
-Timestamp: 2026-08-06T17:34:15Z
-Commit_SHA: 10873b1b58a8ad740bf0363c762f4e585df3c91d
-Host Triple: 
+Timestamp: 2026-08-06T19:08:38Z
+Commit_SHA: 1e108b4e11b8ab8561ac85c3bba9cef391ad0ce3
+Host Triple: x86_64-unknown-linux-gnu
 ---------------------------------------------------
 
 Building for wasm32-wasip2...
-scripts/generate-evidence.sh: line 18: cargo: command not found
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.74s
 Running tests...
-scripts/generate-evidence.sh: line 22: cargo: command not found
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.71s
+     Running tests/policy_cases.rs (target/debug/deps/policy_cases-654036ca9c365acf)
+
+running 1 test
+--- SAFE_SPEND AI PLUGIN: POLICY EVALUATION MATRIX ---
+
+[1] TEST CASE: Valid Transfer (Known Recipient, Healthy Velocity, Normal Amount)
+Input state bounds: {"amount":10.0,"recipient":"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s","reputation":{"allow_list":["metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"]}}
+✅ PASS => Correctly mapping struct { Verdict: Allow, Code: OK }
+
+[2] TEST CASE: Malformed Base58 (Invalid Alphabet / Drainer Obfuscation)
+Input state bounds: {"recipient":"4q7177B43973xX8j1tW32h5J2mG817E2IO"}
+✅ PASS => Correctly mapping struct { Verdict: Deny, Code: ERR_BASE58_DECODE_FAIL }
+
+[3] TEST CASE: Invalid Canonical Length (Wrong Pubkey Derivation)
+Input state bounds: {"recipient":"2s122d"}
+✅ PASS => Correctly mapping struct { Verdict: Deny, Code: ERR_INVALID_PUBKEY_LENGTH }
+
+[4] TEST CASE: Zero Amount Request (Dusting / Sub-Zero bounds)
+Input state bounds: {"amount":0.0,"recipient":"DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"}
+✅ PASS => Correctly mapping struct { Verdict: Deny, Code: ERR_ZERO_AMOUNT }
+
+[5] TEST CASE: Self-Transfer Loop (Gas Waste Protection)
+Input state bounds: {"amount":1.0,"recipient":"DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263","sender":"DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"}
+✅ PASS => Correctly mapping struct { Verdict: RequireApproval, Code: WARN_SELF_TRANSFER }
+
+[6] TEST CASE: Per-Transaction Limit Exceeded (Spending Bound)
+Input state bounds: {"amount":5000.0,"policy":{"max_per_tx_amount":1000.0},"recipient":"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"}
+✅ PASS => Correctly mapping struct { Verdict: Deny, Code: ERR_TX_LIMIT_EXCEEDED }
+
+[7] TEST CASE: Daily Cumulative Limit Reached
+Input state bounds: {"amount":50.0,"daily_spend_so_far":980.0,"policy":{"max_daily_amount":1000.0},"recipient":"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"}
+✅ PASS => Correctly mapping struct { Verdict: RequireApproval, Code: WARN_DAILY_LIMIT_EXCEEDED }
+
+[8] TEST CASE: Velocity Transfer Limit Breached (Spam Filter)
+Input state bounds: {"amount":5.0,"policy":{"max_velocity_transfers":20},"recent_transfer_count":25,"recipient":"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"}
+✅ PASS => Correctly mapping struct { Verdict: RequireApproval, Code: WARN_VELOCITY_EXCEEDED }
+
+[9] TEST CASE: Deny-Listed Drainer Account Intercepted
+Input state bounds: {"amount":1.0,"recipient":"DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263","reputation":{"deny_list":["DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"]}}
+✅ PASS => Correctly mapping struct { Verdict: Deny, Code: ERR_REPUTATION_DENY }
+
+[10] TEST CASE: Unknown Recipient Escalation (Escort to Human Signature)
+Input state bounds: {"amount":1.0,"recipient":"DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263","reputation":{"allow_list":["metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"]}}
+✅ PASS => Correctly mapping struct { Verdict: RequireApproval, Code: REQUIRE_APPROVAL_UNKNOWN }
+
+---------------------------------------------------
+MATRIX STATUS: 10/10 tests passed identically.
+---------------------------------------------------
+test execute_policy_matrix_transparently ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
 
 ===================================================
  END OF MACHINE VALIDATION 

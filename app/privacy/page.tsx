@@ -24,7 +24,7 @@ export default function PrivacyPage() {
                     <ul className="list-inside list-disc space-y-2">
                         <li><strong>Wallet Public Keys</strong>: Required dynamically parsing Devnet blockchains mapping behaviors.</li>
                         <li><strong>Transaction Outputs</strong>: Stored entirely locally mapping historical execution logs across your Dashboard.</li>
-                        <li><strong>Provider Execution Times</strong>: Tracked anonymously during active browser sessions logging provider latencies purely securely.</li>
+                        <li><strong>Provider Execution Times</strong>: Tracked anonymously during active browser sessions logging provider latencies securely.</li>
                     </ul>
                 </section>
 

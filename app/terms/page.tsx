@@ -15,7 +15,7 @@ export default function TermsPage() {
             <div className="mt-12 space-y-12">
                 <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-6 text-sm text-yellow-700 dark:text-yellow-500 leading-relaxed">
                     <strong>Critical Notice:</strong> SafeSpend AI operates exclusively as an experimental risk analysis tool mapped against the Solana Devnet. The AI heuristics outputted
-                    during execution are purely informational bounds and definitively DO NOT orchestrate absolute security limits cleanly.
+                    during execution are informational bounds and definitively DO NOT orchestrate absolute security limits cleanly.
                 </div>
 
                 <section>

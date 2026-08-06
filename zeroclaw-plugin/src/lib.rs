@@ -461,6 +461,8 @@ impl exports::zeroclaw::plugin::plugin_info::Guest for SafeSpendPlugin {
     fn version() -> String { "0.2.0".to_string() }
     fn author() -> String { "SafeSpend AI".to_string() }
 }
+
+#[cfg(target_arch = "wasm32")]
 export!(SafeSpendPlugin);
 
 pub fn test_execute(args: String) -> String {
