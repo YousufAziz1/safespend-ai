@@ -19,9 +19,8 @@ export default function DashboardPage() {
     useEffect(() => {
         try {
             const txs = getTransactions().slice(0, 5);
-            // eslint-disable-next-line
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setHistory(txs);
-            // eslint-disable-next-line
             setIsLoading(false);
         } catch (err) {
             console.error('[SafeSpend] Error surfacing dashboard history:', err);

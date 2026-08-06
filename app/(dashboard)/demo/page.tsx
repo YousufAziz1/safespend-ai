@@ -89,7 +89,7 @@ export default function DemoPage() {
 
                         <div className="flex flex-col gap-2 bg-background p-4 rounded-xl border shadow-sm">
                             <AnimatePresence>
-                                {selectedScenario.steps.map((step, idx) => {
+                                {selectedScenario.steps.map((step) => {
                                     const isComplete = progressSteps.includes(step.name);
                                     return (
                                         <motion.div

@@ -15,7 +15,7 @@ import { buttonVariants } from '@/components/ui/button';
 
 export default function AnalyticsPage() {
     const isMounted = useMounted();
-    const txs = isMounted ? getTransactions() : [];
+    const txs = useMemo(() => isMounted ? getTransactions() : [], [isMounted]);
 
     const stats = useMemo(() => {
         if (!txs.length) return null;

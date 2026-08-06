@@ -83,7 +83,7 @@ export default function SendPaymentPage() {
         const fetchTxs = () => {
             try {
                 setHistory(getTransactions().slice(0, 5));
-            } catch (err) { }
+            } catch { }
         };
         fetchTxs();
         const intervalId = setInterval(fetchTxs, 2000);
@@ -99,12 +99,8 @@ export default function SendPaymentPage() {
         setProviderHealth(null);
         setIsAnalyzing(true);
 
-        const startTime = Date.now();
-
         try {
             const result = await analyzeTransaction(details.recipient, details.amount);
-
-            const duration = Date.now() - startTime;
 
             // Map real analytics directly rendering states recursively exactly as analyzed natively by Node Execution layer
             setProviderHealth(
@@ -132,7 +128,7 @@ export default function SendPaymentPage() {
 
             setAnalysis(mappedAnalysis);
             setExplanation(generatedText);
-        } catch (err) {
+        } catch {
 
             setProviderHealth([
                 { name: 'GoPlus', status: 'offline', latency: 0, confidence: 0 },

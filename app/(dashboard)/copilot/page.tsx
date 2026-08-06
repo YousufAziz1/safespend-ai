@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, Send, Sparkles, ArrowRight, User, Wallet, UserPlus, CheckCircle2, ShieldAlert, ShieldCheck, Shield, BrainCircuit, Loader2, Activity, XCircle, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
+import { Bot, Send, Sparkles, ArrowRight, User, Wallet, UserPlus, CheckCircle2, ShieldAlert, ShieldCheck, Shield, BrainCircuit, Loader2, XCircle, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -16,7 +16,7 @@ import { findMatchingPolicy, savePolicy, type PaymentPolicy } from '@/lib/copilo
 import { getRecipientStats, generateFinancialReasoning, type MemoryStats } from '@/lib/copilot/memory';
 import { createExecutionPlan, updatePlanStep, markRemainingAs, type ExecutionPlan } from '@/lib/copilot/planner';
 import { generateSuggestions, type Suggestion } from '@/lib/copilot/suggestions';
-import { generateProviderExplanations, type ProviderExplanation } from '@/lib/copilot/explainer';
+import { generateProviderExplanations } from '@/lib/copilot/explainer';
 import { type DemoScenario } from '@/lib/copilot/demo-scenarios';
 /* ──────────────────────────────── Types ──────────────────────────────── */
 
@@ -443,7 +443,6 @@ function ExplanationCard({ analysis, plan, memory, policy, intentAmount }: { ana
 function MessageBubble({
     msg,
     hookSignature,
-    onTimelineComplete,
     onSecurityAction,
     onPolicyCreated,
     onPolicyOverride,
@@ -457,7 +456,6 @@ function MessageBubble({
     onPolicyOverride?: (msgId: string, intent: ParsedIntent, address: string, plan: ExecutionPlan) => void,
     onSuggest?: (payload: string) => void
 }) {
-    const isTimelineActive = !!(msg.intent && msg.resolvedAddress && !msg.policyRequest && !msg.policyViolation && !msg.timelineFinished && !msg.isExecuting && !msg.isSigning && !msg.isConfirmed);
 
     const suggestions = useMemo(() => {
         const isStable = msg.timelineFinished && !msg.isExecuting && !msg.isSigning && !msg.analysisFailed;
@@ -709,9 +707,9 @@ export function CopilotInterface({
         if (scrollRef.current) {
             scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
         }
-    }, [messages, isThinking, activeSignature]);
+    }, []);
 
-    useEffect(() => { scrollToBottom(); }, [scrollToBottom]);
+    useEffect(() => { scrollToBottom(); }, [scrollToBottom, messages, isThinking, activeSignature]);
 
     useEffect(() => {
         const ta = textareaRef.current;
