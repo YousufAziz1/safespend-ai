@@ -1,0 +1,28 @@
+package zeroclaw:plugin@0.1.0;
+
+interface types {
+    type json-string = string;
+}
+
+interface tool {
+    use types.{json-string};
+    record tool-result {
+        success: bool,
+        output: string,
+        error: option<string>,
+    }
+    name: func() -> string;
+    description: func() -> string;
+    parameters-schema: func() -> json-string;
+    execute: func(args: json-string) -> result<tool-result, string>;
+}
+
+interface plugin-info {
+    version: func() -> string;
+    author: func() -> string;
+}
+
+world zeroclaw-plugin {
+    export plugin-info;
+    export tool;
+}
