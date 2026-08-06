@@ -31,10 +31,12 @@
 [**Documentation**](docs/)
 
 <div align="center">
-  <img src="docs/screenshots/demo.gif" alt="Animated Demo GIF" width="85%">
+  <a href="https://safespend-ai.vercel.app/demo" target="_blank">
+    <img src="docs/screenshots/demo.gif" alt="Animated Demo GIF" width="85%">
+  </a>
 </div>
 
-*(Animated capture showcasing Copilot dynamic intent parsing and real Web3 hooks).*
+*(Full Demo Video Link: <b>Coming Soon</b>)*
 
 </div>
 
@@ -79,7 +81,7 @@ Complete execution ledger storing final confirmed RPC signatures securely access
 
 <details open>
 <summary><b>🦞 ZeroClaw Rust Plugin</b></summary>
-The deterministic security components have been completely ported to a headless Rust `#wasm-wasip` environment implementing strict WIT traits organically for native ZeroClaw integration securely!
+The deterministic security engine has been ported to a standalone Rust `wasm32-wasip1` component, implementing exact ZeroClaw WIT traits natively for execution within the sandboxed agent runtime!
 </details>
 
 ---
