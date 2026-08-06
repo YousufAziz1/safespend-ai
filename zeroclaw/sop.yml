@@ -1,0 +1,45 @@
+name: transfer-request
+description: End-to-end inbound transfer intent from webhook to Solana Devnet, gated by SafeSpend AI.
+execution_mode: supervised
+
+triggers:
+  - type: webhook
+    path: /webhook/transfer
+
+steps:
+  - id: intent
+    action: parse_intent
+    description: Parse inbound natural-language transfer request for recipient and amount.
+
+  - id: analyze
+    action: call_plugin
+    plugin: safespend-security-check
+    input:
+      recipient: "{{ intent.output.recipient }}"
+      amount: "{{ intent.output.amount }}"
+
+  - id: gate
+    action: switch
+    condition: "{{ analyze.output.verdict }}"
+    cases:
+      Deny:
+        - action: reply
+          message: "Transfer Denied. Reason: {{ analyze.output.code }}"
+        - action: stop
+      RequireApproval:
+        - action: require_approval
+          checkpoint: human-review
+          message: "Transfer requires human approval. Verdict: RequireApproval, Code: {{ analyze.output.code }}"
+      Allow:
+        - action: log
+          message: "Transfer allowed by policy engine."
+
+  - id: execute_tx
+    action: solana_transfer
+    network: devnet
+    recipient: "{{ intent.output.recipient }}"
+    amount: "{{ intent.output.amount }}"
+
+  - id: final_reply
+    action: reply
+    message: "Transfer executed successfully. Signature: {{ execute_tx.output.signature }} Explorer: https://explorer.solana.com/tx/{{ execute_tx.output.signature }}?cluster=devnet"

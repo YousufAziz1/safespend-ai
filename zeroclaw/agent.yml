@@ -1,0 +1,14 @@
+name: SafeSpendAgent
+description: ZeroClaw Agent enforcing the SafeSpend policy across inbound transfer channels.
+
+channels:
+  webhook:
+    default:
+      enabled: true
+      path: /webhook/transfer
+      port: 42617
+      require_auth: true
+
+plugins:
+  - name: safespend-security-check
+    path: ../zeroclaw-plugin/target/wasm32-wasip2/release/zeroclaw_plugin.wasm
