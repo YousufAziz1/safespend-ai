@@ -1,0 +1,28 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.09s
+     Running unittests src\lib.rs (target\debug\deps\zeroclaw_plugin-572a0b4ede2dbc1e.exe)
+
+running 8 tests
+test tests::test_invalid_alphabet_base58 ... ok
+test tests::test_reputation_deny ... ok
+test tests::test_policy_daily_limit_warn ... ok
+test tests::test_system_program ... ok
+test tests::test_valid_address_known ... ok
+test tests::test_velocity_limit_warn ... ok
+test tests::test_policy_tx_limit_exceeded ... ok
+test tests::test_require_approval_unknown ... FAILED
+
+failures:
+
+---- tests::test_require_approval_unknown stdout ----
+
+thread 'tests::test_require_approval_unknown' panicked at src\lib.rs:564:9:
+assertion failed: res.output.contains(r#""verdict": "RequireApproval""#)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tests::test_require_approval_unknown
+
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`

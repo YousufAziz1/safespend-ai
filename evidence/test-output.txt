@@ -1,0 +1,9 @@
+===================================================
+ SafeSpend AI - Verifiable Deterministic Evidence  
+===================================================
+Timestamp: 2026-08-06T17:14:02Z
+Commit_SHA: 1fc3086599a16e9ef8fc7917c6c79ca5d19b805a
+Runtime: wasm32-wasi Native Bound Evaluations
+---------------------------------------------------
+
+scripts/generate-evidence.sh: line 18: cargo: command not found

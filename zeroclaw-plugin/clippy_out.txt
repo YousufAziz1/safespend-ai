@@ -1,0 +1,30 @@
+    Checking zeroclaw-plugin v0.1.0 (C:\Users\USER\OneDrive\Desktop\new agent\safespend-ai\zeroclaw-plugin)
+error: this `map_or` can be simplified
+   --> src\lib.rs:408:27
+    |
+408 |             let in_deny = rep.deny_list.as_ref().map_or(false, |list| list.iter().any(|s| s == recipient_str));
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_map_or
+    = note: `-D clippy::unnecessary-map-or` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::unnecessary_map_or)]`
+help: use is_some_and instead
+    |
+408 -             let in_deny = rep.deny_list.as_ref().map_or(false, |list| list.iter().any(|s| s == recipient_str));
+408 +             let in_deny = rep.deny_list.as_ref().is_some_and(|list| list.iter().any(|s| s == recipient_str));
+    |
+
+error: this `map_or` can be simplified
+   --> src\lib.rs:409:28
+    |
+409 |             let in_allow = rep.allow_list.as_ref().map_or(false, |list| list.iter().any(|s| s == recipient_str));
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_map_or
+help: use is_some_and instead
+    |
+409 -             let in_allow = rep.allow_list.as_ref().map_or(false, |list| list.iter().any(|s| s == recipient_str));
+409 +             let in_allow = rep.allow_list.as_ref().is_some_and(|list| list.iter().any(|s| s == recipient_str));
+    |
+
+error: could not compile `zeroclaw-plugin` (lib) due to 2 previous errors
