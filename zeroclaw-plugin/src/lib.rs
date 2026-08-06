@@ -54,8 +54,7 @@ impl Guest for SafeSpendPlugin {
             "properties": {
                 "sender": { "type": "string", "description": "Sender Base58" },
                 "recipient": { "type": "string", "description": "Recipient Base58" },
-                "amount": { "type": "number", "description": "Transfer amount in SOL" },
-                "token_symbol": { "type": "string", "description": "Token identity" }
+                "amount": { "type": "number", "description": "Transfer amount in SOL" }
             },
             "required": []
         })
