@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2, History, Bot, ArrowLeftRight } from 'lucide-react';
+import { ArrowRight, CheckCircle2, XCircle, HelpCircle, History, Bot, ArrowLeftRight } from 'lucide-react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { WalletInfo } from '@/components/wallet/wallet-info';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -12,6 +13,8 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 
 export default function DashboardPage() {
+    const { connected } = useWallet();
+    const { connection } = useConnection();
     const [history, setHistory] = useState<TransactionRecord[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -105,19 +108,19 @@ export default function DashboardPage() {
                             <CardContent className="grid gap-4 p-6">
                                 <div className="flex items-center justify-between">
                                     <span className="font-medium text-muted-foreground">Wallet Connected</span>
-                                    <CheckCircle2 className="size-5 text-emerald-500" />
+                                    {connected ? (
+                                        <CheckCircle2 className="size-5 text-emerald-500" />
+                                    ) : (
+                                        <XCircle className="size-5 text-destructive" />
+                                    )}
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className="font-medium text-muted-foreground">Solana Devnet</span>
-                                    <CheckCircle2 className="size-5 text-emerald-500" />
-                                </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="font-medium text-muted-foreground">AI Engine Ready</span>
-                                    <CheckCircle2 className="size-5 text-emerald-500" />
-                                </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="font-medium text-muted-foreground">Risk Engine Online</span>
-                                    <CheckCircle2 className="size-5 text-emerald-500" />
+                                    {connection.rpcEndpoint.includes('devnet') ? (
+                                        <CheckCircle2 className="size-5 text-emerald-500" />
+                                    ) : (
+                                        <XCircle className="size-5 text-destructive" />
+                                    )}
                                 </div>
                             </CardContent>
                         </Card>
