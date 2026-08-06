@@ -43,3 +43,7 @@ next-env.d.ts
 # rust 
 zeroclaw-plugin/target/
 tmp_zeroclaw/
+
+# Residual artifacts
+lint_results*.txt
+eslint_report.json

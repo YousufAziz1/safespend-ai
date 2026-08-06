@@ -20,8 +20,7 @@
 ### 🔗 Quick Links
 
 [**GitHub Repository**](https://github.com/YousufAziz1/safespend-ai) •
-[**Threat Model**](docs/THREAT_MODEL.md) •
-[**Attack Transcript Evidence**](evidence/ATTACK_TRANSCRIPT.md) •
+[**Threat Model & Security**](docs/SECURITY.md) •
 [**Optional Demo Viz**](https://safespend-ai.vercel.app/demo)
 
 </div>
@@ -60,8 +59,7 @@ safespend-ai/
 ├── zeroclaw-plugin/      # 🦞 Primary Project: ZeroClaw Rust/WASM Security Plugin
 │   ├── src/lib.rs        # Core deterministic logic engine
 │   └── wit/world.wit     # Explicit ZeroClaw trait interfaces
-├── docs/                 # Documentation (Threat Models, Architecture, Judge FAQs)
-├── evidence/             # Attack transcripts and test case executions
+├── docs/                 # Documentation (ARCHITECTURE.md, SECURITY.md)
 └── app/                  # 🌐 Optional Next.js Dashboard Visualizer 
 ```
 
