@@ -1,6 +1,6 @@
 ﻿<div align="center">
 
-# ðŸ¦ž SafeSpend AI â€” ZeroClaw Security Plugin
+# 🦞 SafeSpend AI — ZeroClaw Security Plugin
 
 **Deterministic WebAssembly Security boundaries for Solana Transactors**
 
@@ -17,18 +17,18 @@
 
 <br />
 
-### ðŸ”— Quick Links
+### 🔗 Quick Links
 
-[**GitHub Repository**](https://github.com/YousufAziz1/safespend-ai) â€¢
-[**Threat Model**](docs/THREAT_MODEL.md) â€¢
-[**Attack Transcript Evidence**](evidence/ATTACK_TRANSCRIPT.md) â€¢
+[**GitHub Repository**](https://github.com/YousufAziz1/safespend-ai) •
+[**Threat Model**](docs/THREAT_MODEL.md) •
+[**Attack Transcript Evidence**](evidence/ATTACK_TRANSCRIPT.md) •
 [**Optional Demo Viz**](https://safespend-ai.vercel.app/demo)
 
 </div>
 
 ---
 
-## ðŸ›¡ï¸ Security Model
+## 🛡️ Security Model
 - **Custody Tier: T0**
 - **No Keystore Limits:** The plugin NEVER stores, touches, or requests native private keys. 
 - **Human Authority:** The agent simply evaluates and suggests; the human always signs transactions.
@@ -36,7 +36,7 @@
 
 ---
 
-## ðŸ—ï¸ The ZeroClaw Component Model
+## 🏗️ The ZeroClaw Component Model
 
 SafeSpend AI is built first and foremost as a standard **ZeroClaw `tool` Plugin**. 
 It guarantees **zero `solana-sdk` dependency bloat**, exporting exact `wit` bindings evaluating `base58` destination arrays reliably within the host `wasm32-wasip2` sandbox execution. 
@@ -53,21 +53,21 @@ It guarantees **zero `solana-sdk` dependency bloat**, exporting exact `wit` bind
 
 ---
 
-## ðŸ“‚ Project Structure
+## 📂 Project Structure
 
 ```text
 safespend-ai/
-â”œâ”€â”€ zeroclaw-plugin/      # ðŸ¦ž Primary Project: ZeroClaw Rust/WASM Security Plugin
-â”‚   â”œâ”€â”€ src/lib.rs        # Core deterministic logic engine
-â”‚   â””â”€â”€ wit/world.wit     # Explicit ZeroClaw trait interfaces
-â”œâ”€â”€ docs/                 # Documentation (Threat Models, Architecture, Judge FAQs)
-â”œâ”€â”€ evidence/             # Attack transcripts and test case executions
-â””â”€â”€ app/                  # ðŸŒ Optional Next.js Dashboard Visualizer 
+├── zeroclaw-plugin/      # 🦞 Primary Project: ZeroClaw Rust/WASM Security Plugin
+│   ├── src/lib.rs        # Core deterministic logic engine
+│   └── wit/world.wit     # Explicit ZeroClaw trait interfaces
+├── docs/                 # Documentation (Threat Models, Architecture, Judge FAQs)
+├── evidence/             # Attack transcripts and test case executions
+└── app/                  # 🌐 Optional Next.js Dashboard Visualizer 
 ```
 
 ---
 
-## ðŸ–¼ï¸ Optional Dashboard Visualizer
+## 🖼️ Optional Dashboard Visualizer
 
 While the core project resides in the `/zeroclaw-plugin` backend, this repository includes a full **Next.js/React** web dashboard serving strictly as an optional visual front-end simulation allowing judges to test scenarios rapidly.
 
@@ -79,7 +79,7 @@ While the core project resides in the `/zeroclaw-plugin` backend, this repositor
 
 ---
 
-## ðŸš€ Installation & Setup (ZeroClaw Plugin)
+## 🚀 Installation & Setup (ZeroClaw Plugin)
 
 1. **Clone the repository:**
    ```bash
@@ -94,7 +94,7 @@ While the core project resides in the `/zeroclaw-plugin` backend, this repositor
 
 3. **Build the WASM payload:**
    ```bash
-   cargo component build --release
+   cargo component build --release --target wasm32-wasip2
    ```
 
 4. **Run Native Logic Fuzzers & Tests:**
@@ -104,8 +104,8 @@ While the core project resides in the `/zeroclaw-plugin` backend, this repositor
 
 ---
 
-## ðŸ¤ Contributors
+## 🤝 Contributors
 Built computationally mapping ZeroClaw standards explicitly by **Yousuf Aziz**.
 
-## ðŸ“„ License
+## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
