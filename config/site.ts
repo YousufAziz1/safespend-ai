@@ -6,10 +6,10 @@ export const siteConfig: SiteConfig = {
         'AI-powered payment safety system built for Solana. The AI requests, the blockchain enforces.',
     version: '0.1.0',
     author: {
-        name: 'SafeSpend',
-        url: 'https://github.com/safespend',
+        name: 'Yousuf Aziz',
+        url: 'https://github.com/YousufAziz1',
     },
-    github: 'https://github.com/safespend/safespend-ai',
+    github: 'https://github.com/YousufAziz1/safespend-ai',
     url: 'https://safespend.ai',
     navigation: [
         { title: 'Home', href: '/' },
@@ -31,7 +31,7 @@ export const siteConfig: SiteConfig = {
                 { title: 'Documentation', href: '/docs', external: false },
                 {
                     title: 'GitHub',
-                    href: 'https://github.com/safespend/safespend-ai',
+                    href: 'https://github.com/YousufAziz1/safespend-ai',
                     external: true,
                 },
             ],
