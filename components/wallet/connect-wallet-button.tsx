@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useMounted } from '@/hooks/use-mounted';
 
 export function ConnectWalletButton() {
-    const { wallet, connected, connecting, disconnecting } = useWallet();
+    const { wallet, connected, connecting, disconnecting, disconnect } = useWallet();
     const { setVisible } = useWalletModal();
     const mounted = useMounted();
 
@@ -23,9 +23,9 @@ export function ConnectWalletButton() {
 
     if (connected && wallet) {
         return (
-            <Button variant="outline" size="sm" onClick={() => setVisible(true)}>
+            <Button variant="outline" size="sm" onClick={() => disconnect()}>
                 <Shield className="size-4 text-primary" />
-                <span className="hidden sm:inline-block">Connected</span>
+                <span className="hidden sm:inline-block">Disconnect</span>
             </Button>
         );
     }
