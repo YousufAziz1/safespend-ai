@@ -701,12 +701,6 @@ export function CopilotInterface({
     useEffect(() => { messagesRef.current = messages; }, [messages]);
     useEffect(() => { stepRef.current = onStepProgress; }, [onStepProgress]);
 
-    // Demo Auto-Pilot Engine
-    useEffect(() => {
-        if (demoMode && demoScenario && messages.length === 0 && !isThinking) {
-            handleSend(demoScenario.command);
-        }
-    }, [demoMode, demoScenario, messages.length]);
 
     // Standard hooks mapping strictly to SafeSpend runtime bounds natively decoupling ui state limits
     const { sendTransaction, simulatePayment, signature: activeSignature, error: hookError } = useSendTransaction();
@@ -1058,6 +1052,14 @@ export function CopilotInterface({
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
     };
+
+    // Demo Auto-Pilot Engine
+    useEffect(() => {
+        if (demoMode && demoScenario && messages.length === 0 && !isThinking) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            handleSend(demoScenario.command);
+        }
+    }, [demoMode, demoScenario, messages.length, isThinking, handleSend]);
 
     return (
         <div className="flex h-[calc(100vh-4rem)] flex-col">
