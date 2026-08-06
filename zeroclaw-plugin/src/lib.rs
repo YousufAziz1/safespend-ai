@@ -12,7 +12,6 @@ struct AnalyzeRequest {
     sender: Option<String>,
     recipient: Option<String>,
     amount: Option<f64>,
-    token_symbol: Option<String>,
 }
 
 #[derive(Serialize, Clone)]
@@ -235,7 +234,7 @@ mod tests {
     #[test]
     fn test_valid_address() {
         let args = json!({
-            "recipient": "4q7177B43973xX8j1tW32h5J2mG817E2n",
+            "recipient": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
             "amount": 10.0
         })
         .to_string();
@@ -269,7 +268,7 @@ mod tests {
     #[test]
     fn test_lamport_overflow() {
         let args = json!({
-            "recipient": "4q7177B43973xX8j1tW32h5J2mG817E2n",
+            "recipient": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
             "amount": 20_000_000_000.0
         })
         .to_string();
