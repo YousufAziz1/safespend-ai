@@ -8,6 +8,12 @@ This index references every explicit constraint executed inside `zeroclaw-plugin
 - **Severity:** Critical
 - **Unit Test Coverage:** Covered by `test_system_program()` checking failure pathways globally (or implicit execution traps).
 
+### `ERR_PAYLOAD_TOO_LARGE`
+- **Purpose:** Stops Memory-allocation panics (DOS) executing within WASM linear boundaries cleanly.
+- **Trigger Condition:** Input array strings `len() > 44`.
+- **Severity:** Critical
+- **Unit Test Coverage:** Protected synchronously prior to decode limits securely.
+
 ### `ERR_BASE58_DECODE_FAIL`
 - **Purpose:** Restricts malformed alphabet injections targeting the Solana signature matrix.
 - **Trigger Condition:** Target evaluation fails `bs58::decode()` natively. Let `I` and `O` break bounds structurally.
